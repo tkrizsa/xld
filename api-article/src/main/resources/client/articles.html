@@ -1,0 +1,15 @@
+<div xld-page="2,2,2" ng-controller='xldCtrlArticles' class=''>
+<div class='xld-page-head'>
+	<div class='xld-col-2'>
+		<a class='button right' href='/articles/new' xld-forward >Add article</a>
+		<h1 >Articles</h1>
+	</div>
+</div>
+<table class='xld-list clickable xld-col-2' >
+	<tr ng-repeat="article in s.articles._rows" class='selectable' ng-click='goForward(article.gui.href, $event)' >
+	
+		<td>{{article.articleName}}</td>
+	</tr>
+</table>
+</div>
+

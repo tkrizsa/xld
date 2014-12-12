@@ -1,0 +1,225 @@
+* {
+	box-sizing: border-box;
+}
+
+html, body {
+    height:100%;
+    width:100%;
+    position:relative;
+    margin:0;
+    padding:0;
+	font-size:15px; /* should adjust with media query and from here only em and rem enabled */
+	
+}
+
+
+div#xld-outer {
+    height:100%; 
+    width:100%; 
+	overflow : hidden;
+    background-color:#333;
+	
+}
+
+div#xld-main {
+	z-index : 500;
+    width:100%;
+    height:80%; 
+	overflow-x:hidden;
+	overflow-y:auto;
+	position:relative;
+    background-color:#fdfdfd;
+}
+
+#xld-main-scroll {
+	position:absolute;
+	left : 0;
+	top : 0;
+	width : 10000px;
+	height:100%;
+	overflow:hidden;
+	background-color:#fdfdfd;
+	
+}
+
+.xld-page-col {
+	position:relative; 
+	width:100%; /* javascript overrides it */
+	height:100%;
+	float:left;
+	outline : 1px solid #ddd;
+	overflow:hidden;
+	
+	background-color:#fdfdfd;
+	background-color: #f8f8f8;
+	box-shadow: 5px 0px 10px -3px rgba(0, 0, 0, 0.11) inset;	
+}
+
+	.xld-page-col:first-child {
+	outline : none;
+	background-color:#fdfdfd;
+	box-shadow : none;
+	}
+
+.xld-page-scroll {
+	position:relative; 
+	width:100%;
+	height:100%;
+	overflow-y:auto;
+	overflow-x:hidden;
+}
+
+.xld-page-header {
+float:left;
+width:100%;
+
+}
+
+.xld-page-pad {
+	padding:8px;
+}
+
+/* ============== */
+
+.xld-col-1 {
+	max-width:19rem;
+}
+
+.xld-col-2 {
+	max-width:39rem;
+}
+
+
+/* ============================================================= LIST ============================================================== */
+
+.xld-list {
+	width:100%;
+}
+
+.xld-list.clickable {
+	cursor : pointer;
+}
+
+.xld-list tr {
+	border-bottom: 1px solid #ddd;
+}
+
+.xld-list tr:hover {
+	background-color:#FFF;
+	background-color:#FDF9E4;
+}
+
+.xld-list tr.selected {
+	background-color: #cbd8e0;
+	background-color: #84D0FF;
+}
+
+.xld-list td {
+	padding:0.2rem 1rem;
+}
+
+
+
+/* ============================================================= NAVIGATION ============================================================== */
+#xld-nav-main
+		{
+			z-index : 1000;
+			width: 10000px;
+			font-weight: 400;
+			height : 1.75em;
+		
+		}
+
+			#xld-nav-main > a
+			{
+				display: none;
+			}
+
+			#xld-nav-main li
+			{
+				position: relative;
+			}
+				#xld-nav-main li a
+				{
+					color: #fff;
+					display: block;
+					text-decoration: none;
+				}
+				#xld-nav-main li a:active
+				{
+					background-color: #c00 !important;
+				}
+
+			/* first level */
+
+			#xld-nav-main > ul
+			{
+				height: 2em; 
+				background-color: transparent;
+				margin  : 0;
+				padding : 0;
+			}
+				#xld-nav-main > ul > li
+				{
+					height: 100%;
+					float: left;
+					outline : 0px solid orange;
+				}
+					#xld-nav-main > ul > li > a
+					{
+						height: 100%;
+						text-align: center;
+						padding : 0 2em;
+						line-height : 2em;
+						white-space : nowrap;
+					}
+						#xld-nav-main > ul > li:not( :last-child ) > a
+						{
+							border-right: 1px solid #555;
+						}
+						#xld-nav-main > ul > li:hover > a,
+						#xld-nav-main > ul:not( :hover ) > li.active > a
+						{
+							background-color: #6FA928;
+						}
+
+
+				/* second level */
+
+				#xld-nav-main li ul
+				{
+					background-color: #FEBD47;
+					display: none;
+					position: absolute;
+					top: 2em;
+					z-index: 1000;
+					padding:0;
+					margin:0;
+				}
+					#xld-nav-main li:hover ul
+					{
+						display: block;
+						left: 0;
+						right: 0;
+					}
+					
+						#xld-nav-main li:hover ul.hideonclick {
+						display:none !important;
+						}
+					
+						#xld-nav-main li:not( :first-child ):hover ul
+						{
+							left: -1px;
+						}
+						#xld-nav-main li ul a
+						{
+							border-top: 1px solid #E1B31C;
+							padding: 0.4em 0.75em; /* 15 (20) */
+							color : #4A3F1E;
+						}
+							#xld-nav-main li ul li a:hover,
+							#xld-nav-main li ul:not( :hover ) li.active a
+							{
+							background-color: #D09342;
+							color: #080808;
+							}

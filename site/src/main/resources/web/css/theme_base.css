@@ -1,0 +1,177 @@
+
+/* ==================================================  ========================================== */
+@import url(//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,300,400,700);
+
+body {
+	font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+}
+
+
+
+.xld-page-content h2 {
+padding: 0;
+margin: 0;
+border-bottom: 1px solid #E5E5E5;
+font-size: 1.4rem;
+}
+
+
+
+.xld-page-content a {
+	text-decoration : none;
+	color:#4786A1;
+	display:inline-block;
+}
+
+	/*.xld-page-content a:hover {
+		text-decoration : none;
+		color: #fff;
+		background-color:#215CC1;
+	}*/
+
+	.xld-page-content a:active,
+	.xld-page-content button:active {
+		background: #c00 !important;
+		color:#fff !important;
+	}
+
+
+
+.xld-page-content label {
+font-family: 'Open Sans', sans-serif;
+font-size: 0.7rem;
+color: #666;
+text-shadow: #FFF 0 1px 0;
+font-weight: 300;
+}
+
+.xld-page-content select, 
+.xld-page-content input {
+padding: 0.3em 1em;
+width: 100%;
+border: 1px solid #D4D4D4;
+background-color: #FFF;
+border-radius: 4px;
+font-weight: bold;
+margin-bottom : 3px;
+}
+
+
+.xld-page-head {
+width: 100%;
+background-color: #7C7C7C;
+background-color: #E4E4E4;
+height: 2.5rem;
+padding: 0.5rem 1rem;
+
+}
+
+.xld-page-head .button {
+
+background: #f1e767; /* Old browsers */
+background: -moz-linear-gradient(top,  #f1e767 0%, #feb645 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f1e767), color-stop(100%,#feb645)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  #f1e767 0%,#feb645 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  #f1e767 0%,#feb645 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  #f1e767 0%,#feb645 100%); /* IE10+ */
+background: linear-gradient(to bottom,  #f1e767 0%,#feb645 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f1e767', endColorstr='#feb645',GradientType=0 ); /* IE6-9 */
+
+padding: 0 1rem;
+color: #756532;
+font-weight: 700;
+border: 1px solid #706536;
+line-height: 1.5rem;
+float : left;
+text-shadow: 1px 1px #E6E1CD;
+}
+
+.xld-page-head .button.back {
+border-top-left-radius: 11px;
+border-bottom-left-radius: 11px;
+}
+
+.xld-page-head .button.save {
+background: #ff8377; /* Old browsers */
+background: -moz-linear-gradient(top,  #ff8377 0%, #c43f31 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ff8377), color-stop(100%,#c43f31)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  #ff8377 0%,#c43f31 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  #ff8377 0%,#c43f31 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  #ff8377 0%,#c43f31 100%); /* IE10+ */
+background: linear-gradient(to bottom,  #ff8377 0%,#c43f31 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ff8377', endColorstr='#c43f31',GradientType=0 ); /* IE6-9 */
+border: 1px solid #825D5A;
+color: #722323;
+}
+
+.xld-page-head .button.right {
+float:right;
+}
+
+.xld-page-head h1 {
+font-size: 1.4rem;
+padding: 0 1rem;
+margin: 0;
+display: inline-block;
+float: left;
+line-height: 1.5rem;
+color: #414141;
+text-shadow: 1px 1px #9A9A9A;
+color: #3D3D3D;
+text-shadow: 1px 1px #FFF;
+}
+
+/* ================================================== Scrollbar ========================================== */
+
+.xld-scroll-track {
+    width: 10px;
+    background-clip: padding-box;
+    background: transparent;
+    border-style: solid;
+    border-color: transparent;
+    border-width: 0;
+    border-left-width: 1px;
+}
+
+.xld-scroll-track.dragging,
+.xld-scroll-track:hover {
+    background: #f2f2f2; /* No RGBA support */
+    background: rgba(0, 0, 0, 0.05);
+    -webkit-box-shadow: inset 1px 0 0 rgba(0, 0, 0, 0.1);
+    box-shadow: inset 1px 0 0 rgba(0, 0, 0, 0.1);
+}
+
+.xld-scroll-track:active {
+    background: #f2f2f2; /* No RGBA support */
+    background: rgba(0, 0, 0, 0.05);
+    -webkit-box-shadow: inset 1px 0 0 rgba(0, 0, 0, 0.14),
+                        inset -1px -1px 0 rgba(0, 0, 0, 0.07);
+    box-shadow: inset 1px 0 0 rgba(0, 0, 0, 0.14),
+                inset -1px -1px 0 rgba(0, 0, 0, 0.07);
+}
+
+.xld-scroll-handle {
+    width: 10px;
+    background-clip: padding-box;
+    background: #ccc; /* No RGBA support */
+    background: rgba(0, 0, 0, 0.2);
+    -webkit-box-shadow: inset 1px 1px 0 rgba(0, 0, 0, 0.1),
+                        inset 0 -1px 0 rgba(0, 0, 0, 0.07);
+    box-shadow: inset 1px 1px 0 rgba(0, 0, 0, 0.1),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.07);
+}
+
+.xld-scroll-handle:hover {
+    background: #999; /* No RGBA support */
+    background: rgba(0, 0, 0, 0.4);
+    -webkit-box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.25);
+    box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.25);
+}
+
+.dragging .xld-scroll-handle,
+.xld-scroll-handle:active {
+    background: gray; /* No RGBA support */
+    background: rgba(0, 0, 0, 0.5);
+    -webkit-box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.35);
+    box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.35);
+}

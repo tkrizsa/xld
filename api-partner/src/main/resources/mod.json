@@ -1,0 +1,6 @@
+{
+	"main" : "mod_partner.js",
+	"auto-redeploy" : true,
+	"includes" : "xld~node~1.0,xld~api~1.0"
+ 
+}
