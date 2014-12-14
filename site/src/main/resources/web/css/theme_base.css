@@ -7,6 +7,11 @@ body {
 }
 
 
+#xld-main, #xld-main-scroll {
+background-color:#353535;
+}
+
+
 
 .xld-page-content h2 {
 padding: 0;

@@ -7,27 +7,27 @@ public class StringPropField extends Field {
 	
 	private int maxLength;
 	
-	public StringPropField(Model model, String fieldName, int maxLength) {
+	public StringPropField(ModelBase model, String fieldName, int maxLength) {
 		super(model, fieldName);
 		this.maxLength = maxLength;
 	}
 	
-	public void addToJson(Model.Row row, JsonObject jrow) {
+	public void addToJson(ModelBase.Row row, JsonObject jrow) {
 		String val = (String)row.get(fieldName);
 		jrow.putString(fieldName, val);
 	}
 	
-	public void getFromJson(Model.Row row, JsonObject jrow) {
+	public void getFromJson(ModelBase.Row row, JsonObject jrow) {
 		String val = jrow.getString(fieldName);
 		row.set(fieldName, val);
 	}
 	
-	public void getFromJson(Model.Row row, JsonArray jrow, int ix) {
+	public void getFromJson(ModelBase.Row row, JsonArray jrow, int ix) {
 		Object val = jrow.get(ix);
 		row.set(fieldName, val == null ? null : val.toString());
 	}
 
-	public void addToJson(Model.Row row, JsonArray jrow) {
+	public void addToJson(ModelBase.Row row, JsonArray jrow) {
 		String val = (String)row.get(fieldName);
 		jrow.addString(val);
 	}
@@ -40,6 +40,10 @@ public class StringPropField extends Field {
 		}
 	}
 	
+	@Override
+	public String toString() {
+		return super.toString() + "-string(" + maxLength + ")";
+	}
 
 	
 

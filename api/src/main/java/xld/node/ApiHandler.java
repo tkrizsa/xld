@@ -16,12 +16,23 @@ public abstract class ApiHandler implements Handler<Message<JsonObject>> {
 	
 	
 	public ApiHandler() {
-		this.topMost = this;
+		this(null);
 	}
 	
 	public ApiHandler(ApiHandler parent) {
-		this.parent = parent;
-		this.topMost = parent.getTopMost();
+		if (parent == null) {
+			this.topMost = this;
+		} else {
+			this.parent = parent;
+			this.topMost = parent.getTopMost();
+		}
+		ApiHandler tm = getTopMost();
+		if (tm.response == null) {
+			response = new JsonObject();
+			body("");
+			status(200);
+			contentType("text/plain");		
+		}
 	}
 	
 	public ApiHandler getTopMost() {
@@ -37,11 +48,6 @@ public abstract class ApiHandler implements Handler<Message<JsonObject>> {
 	// only topmost comes here, as (before) handle API request
 	public void handle(Message<JsonObject> message) {
 		this.message = message;
-		response = new JsonObject();
-		body("");
-		status(200);
-		contentType("text/plain");		
-		
 		handle();
 	}
 	
@@ -64,6 +70,11 @@ public abstract class ApiHandler implements Handler<Message<JsonObject>> {
 	
 	
 	public void body(String body) {
+		if (topMost == null) {
+			System.err.println("topMost is null");
+		} else if (topMost.response == null) {
+			System.err.println("topMost.response is null");
+		}
 		topMost.response.putString("body", body);
 	}
 	

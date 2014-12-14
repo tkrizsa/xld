@@ -3,6 +3,7 @@ package xld.node;
 import org.vertx.java.core.Handler;
 import org.vertx.java.core.eventbus.EventBus;
 import org.vertx.java.core.eventbus.Message;
+import org.vertx.java.core.file.FileSystem;
 import org.vertx.java.platform.Verticle;
 import org.vertx.java.core.logging.Logger;
 import org.vertx.java.core.json.JsonObject;
@@ -36,8 +37,16 @@ public class Node extends Verticle {
 		
 	}
 	
+	public String getModuleId() {
+		return moduleId;
+	}
+	
 	public EventBus eb() {
 		return this.vertx.eventBus();
+	}
+	
+	public FileSystem fileSystem() {
+		return this.vertx.fileSystem();
 	}
 
 	public void info(Object o) {

@@ -34,6 +34,8 @@ public  class Controller {
 			// error(ex.getMessage());
 		// }
 		
+		
+		
 	}
 	
 
@@ -73,10 +75,15 @@ public  class Controller {
 	}
 
 	public void publish() {
+		installModel();
 		publishList();
 		publishItem();
 		node.registerTemplate(getModelIdPlural());
 		node.registerTemplate(getModelId(), getModelIdPlural() + "/:id");		
+	}
+	
+	public void installModel() {
+		createModel().install();
 	}
 	
 	public void publishList() {

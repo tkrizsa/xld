@@ -6,7 +6,7 @@ import org.vertx.java.core.json.JsonArray;
 public class IdField extends Field {
 	
 	
-	public IdField(Model model, String fieldName) {
+	public IdField(ModelBase model, String fieldName) {
 		super(model, fieldName);
 	}
 	
@@ -14,28 +14,28 @@ public class IdField extends Field {
 		return true;
 	}
 	
-	public boolean isPrimaryKeyLive(Model.Row row) {
+	public boolean isPrimaryKeyLive(ModelBase.Row row) {
 		return row.get(fieldName) != null;
 	}
 	
 
-	public void addToJson(Model.Row row, JsonObject jrow) {
+	public void addToJson(ModelBase.Row row, JsonObject jrow) {
 		Object val = row.get(fieldName);
 		// in row must be null or Long
 		jrow.putNumber(fieldName, val == null ? null : (long)val);
 	}
 	
-	public void getFromJson(Model.Row row, JsonObject jrow) {
+	public void getFromJson(ModelBase.Row row, JsonObject jrow) {
 		Object val = jrow.getValue(fieldName);
 		val = parse(val);
 		row.set(fieldName, val);
 	}
 	
-	public void getFromJson(Model.Row row, JsonArray jrow, int ix) {
+	public void getFromJson(ModelBase.Row row, JsonArray jrow, int ix) {
 		row.set(fieldName, parse(jrow.get(ix)));
 	}
 
-	public void addToJson(Model.Row row, JsonArray jrow) {
+	public void addToJson(ModelBase.Row row, JsonArray jrow) {
 		Object val = parse(row.get(fieldName));
 		if (val == null) {
 			jrow.add(null);
@@ -54,6 +54,10 @@ public class IdField extends Field {
 		}
 	}
 	
+	@Override
+	public String toString() {
+		return super.toString() + "-id";
+	}
 
 
 }

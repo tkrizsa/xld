@@ -15,15 +15,14 @@ public class SqlRunner {
 	protected Node node;
 	private List<JsonObject> queue = new ArrayList<JsonObject>();
 	private int nextRun = 0;
+	private JsonObject lastResult;
 	
 	public SqlRunner(Node node) {
 		this.node = node;
-		
 	}
 	
 
-	public void insert(Model model, Model.Row row) {
-		
+	public void insert(ModelBase model, ModelBase.Row row) {
 		JsonObject q = new JsonObject();
 		q.putString("action", "insert");
 		q.putString("table", model.getTableName());
@@ -42,7 +41,7 @@ public class SqlRunner {
 		queue.add(q);
 	}
 	
-	public void update(Model model, Model.Row row) {
+	public void update(ModelBase model, ModelBase.Row row) {
 		JsonObject q = new JsonObject();
 		q.putString("action", "prepared");
 		
@@ -75,6 +74,19 @@ public class SqlRunner {
 		
 		queue.add(q);
 	}
+	
+	public void prepared(String statement, Object[] values) {
+		JsonObject q = new JsonObject();
+		q.putString("action", "prepared");
+		q.putString("statement", statement);
+		
+		JsonArray jvalues = new JsonArray();
+		for (int i = 0; i < values.length; i++) {
+			jvalues.add(values[i]);
+		}
+		q.putArray("values", jvalues);
+		queue.add(q);
+	}
 
 
 	public void run(final ApiHandler apiHandler) {
@@ -90,7 +102,8 @@ public class SqlRunner {
 					if (sqlError()) {
 						replyError(sqlMessage());
 						return;
-					}
+					} 
+					thisRunner.lastResult = this.getMessage().body();
 					thisRunner.run(apiHandler);
 				}
 			});
@@ -98,6 +111,10 @@ public class SqlRunner {
 		}
 	
 	
+	}
+	
+	public JsonObject getLastResult() {
+		return lastResult;
 	}
 
 

@@ -8,9 +8,9 @@ import org.vertx.java.core.json.JsonArray;
 public abstract class Field {
 
 	protected String fieldName;
-	protected Model model;
+	protected ModelBase model;
 	
-	public Field(Model model, String fieldName) {
+	public Field(ModelBase model, String fieldName) {
 		this.model = model;
 		this.fieldName = fieldName;
 	}
@@ -23,19 +23,24 @@ public abstract class Field {
 		return false;
 	}
 
-	public boolean isPrimaryKeyLive(Model.Row row) {
+	public boolean isPrimaryKeyLive(ModelBase.Row row) {
 		return false;
 	}
 
-	public abstract void addToJson(Model.Row row, JsonObject jrow);
-	public abstract void addToJson(Model.Row row, JsonArray jrow);
-	public abstract void getFromJson(Model.Row row, JsonObject jrow);
-	public abstract void getFromJson(Model.Row row, JsonArray jrow, int ix);
+	public abstract void addToJson(ModelBase.Row row, JsonObject jrow);
+	public abstract void addToJson(ModelBase.Row row, JsonArray jrow);
+	public abstract void getFromJson(ModelBase.Row row, JsonObject jrow);
+	public abstract void getFromJson(ModelBase.Row row, JsonArray jrow, int ix);
 	
 	public abstract Object parse(Object val);
 
-	public void set(Model.Row row, Object val) {
+	public void set(ModelBase.Row row, Object val) {
 		row.set(fieldName, parse(val));
+	}
+	
+	@Override
+	public String toString() {
+		return getFieldName();
 	}
 		
 }
