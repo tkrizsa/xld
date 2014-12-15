@@ -33,7 +33,12 @@ public class Node extends Verticle {
 		reg.putString("address", address);
 		
 		eb.publish("xld-register-http", reg);
-		eb.registerHandler(address, new ModuleRegister());
+		
+		eb.registerHandler(address, new NodeHandler() {
+			public void handle(ApiHandler apiHandler) {
+				(new ModuleRegister(apiHandler)).handle();
+			}
+		});
 		
 	}
 	
@@ -50,17 +55,25 @@ public class Node extends Verticle {
 	}
 
 	public void info(Object o) {
-		container.logger().info(o.toString());
+		if (o == null) {
+			container.logger().info("<null>");
+		} else {
+			container.logger().info(o.toString());
+		}
 	}
 	public void error(Object o) {
-		container.logger().error(o.toString());
+		if (o == null) {
+			container.logger().error("<null>");
+		} else {
+			container.logger().error(o.toString());
+		}
 	}
 
-	public void registerApi(String pattern, final ApiHandler apiHandler) {		
-		registerApi(pattern, "get", apiHandler);
+	public void registerApi(String pattern, final NodeHandler nodeHandler) {		
+		registerApi(pattern, "get", nodeHandler);
 	}
 	
-	public void registerApi(String pattern, String method, final ApiHandler apiHandler) {		
+	public void registerApi(String pattern, String method, final NodeHandler nodeHandler) {		
 		EventBus eb = vertx.eventBus();
 		Random rand = new Random();
 		int randomNum = rand.nextInt(9999999) + 10000000;
@@ -72,7 +85,7 @@ public class Node extends Verticle {
 		obj.putString("address", 	address);
 		obj.putString("method", 	method);
 		eb.publish("xld-register-http", obj);
-		eb.registerHandler(address, apiHandler);
+		eb.registerHandler(address, nodeHandler);
 	}
 
 	
@@ -137,6 +150,9 @@ public class Node extends Verticle {
 		int filesLeft;
 		JsonArray modResult = new JsonArray();
 		
+		public ModuleRegister(ApiHandler apiHandler) {
+			super(apiHandler);
+		}
 		
 		class FileReader implements AsyncResultHandler<Buffer> {
 			String fileName;

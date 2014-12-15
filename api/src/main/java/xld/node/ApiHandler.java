@@ -4,9 +4,13 @@ import org.vertx.java.core.Handler;
 import org.vertx.java.core.json.JsonObject;
 import org.vertx.java.core.eventbus.Message;
 
-
-
-
+/*
+	Handler object for incoming requests
+	Saves the original request message, got from the node, and allows reply from every level of asynchronous process
+	(eg. send back error)
+	Topmost holds the original request message with reply() function, and the response data.
+	All subsequent instance has a parent, but has his own message if needed.
+*/
 public abstract class ApiHandler implements Handler<Message<JsonObject>> {
 
 	private ApiHandler parent = null;
@@ -45,6 +49,10 @@ public abstract class ApiHandler implements Handler<Message<JsonObject>> {
 	
 	public abstract void handle();
 	
+	public void setMessage(Message<JsonObject> message) {
+		this.message = message;
+	}
+	
 	// only topmost comes here, as (before) handle API request
 	public void handle(Message<JsonObject> message) {
 		this.message = message;
@@ -82,12 +90,19 @@ public abstract class ApiHandler implements Handler<Message<JsonObject>> {
 		topMost.response.putNumber("status", status);
 	}
 	
+	public int getStatus() {
+		return (int)topMost.response.getNumber("status");
+	}
+	
 	public void contentType(String contentType) {
 		topMost.response.putString("contentType", contentType);
 	}
 	
 	public void reply() {
-		topMost.message.reply(topMost.response);
+		/* if there is no real api call, no topmost.message eg. in install */
+		if (topMost.message != null) {
+			topMost.message.reply(topMost.response);
+		}
 	}
 	
 	public void reply(JsonObject rep) {

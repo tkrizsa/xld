@@ -18,6 +18,7 @@ public class Article extends Model {
 		
 		fieldAddId("articleId");
 		fieldAddStringProp("articleName", 100);
+		fieldAddStringProp("articleDescription", 65536);
 	}
 	
 	

@@ -88,11 +88,11 @@ public  class Controller {
 	
 	public void publishList() {
 	
-		node.registerApi("/api/" + getModelIdPlural() , new ApiHandler () {
-			public void handle() {
+		node.registerApi("/api/" + getModelIdPlural() , new NodeHandler () {
+			public void handle(final ApiHandler apiHandler) {
 			
 				final Model a = createModel();
-				a.sqlLoadList(new ApiHandler(this) {
+				a.sqlLoadList(new ApiHandler(apiHandler) {
 					public void handle() {
 						try {
 							body(a.jsonGet());
@@ -112,20 +112,22 @@ public  class Controller {
 	
 	public void publishItem() {
 	
-		node.registerApi("/api/" + getModelIdPlural() + "/:id" , new ApiHandler () {
-			public void handle() {
+		node.registerApi("/api/" + getModelIdPlural() + "/:id" , new NodeHandler () {
+			public void handle(final ApiHandler apiHandler) {
 			
 				final Model a = createModel();
-				String keys = getMessage().body().getObject("params").getString("id");
+				String keys = apiHandler.getMessage().body().getObject("params").getString("id");
 				
 				if ("new".equals(keys)) {
 					a.rowAdd();
-					body(a.jsonGet());
-					contentType("application/json");
-					reply();	
+					apiHandler.body(a.jsonGet());
+					apiHandler.contentType("application/json");
+					node.info("*** reply statuscode : " + apiHandler.getStatus());
+					apiHandler.reply();
+					return;
 				}
 				
-				a.sqlLoadByKeys(keys, new ApiHandler(this) {
+				a.sqlLoadByKeys(keys, new ApiHandler(apiHandler) {
 					public void handle() {
 						if (a.empty()) {
 							replyError("Not exists");
@@ -133,22 +135,24 @@ public  class Controller {
 						}
 						body(a.jsonGet());
 						contentType("application/json");
-						reply();	
+						node.info("*** reply statuscode : " + apiHandler.getStatus());
+						reply();
+						return;
 					}
 				});
 			}
 		});
 	
-		node.registerApi("/api/" + getModelIdPlural() + "/:id" , "post", new ApiHandler () {
-			public void handle() {
+		node.registerApi("/api/" + getModelIdPlural() + "/:id" , "post", new NodeHandler () {
+			public void handle(final ApiHandler apiHandler) {
 			
 				final Model a = createModel();
-				String keys = getParam("id");
+				String keys = apiHandler.getParam("id");
 				
-				String s =  getMessage().body().getString("body");
+				String s =  apiHandler.getMessage().body().getString("body");
 				a.loadFromJson(new JsonObject(s));
 				
-				a.sqlSave(new ApiHandler(this) {
+				a.sqlSave(new ApiHandler(apiHandler) {
 					public void handle() {
 						body(a.jsonGet());
 						contentType("application/json");

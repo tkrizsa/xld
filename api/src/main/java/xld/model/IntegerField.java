@@ -3,16 +3,10 @@ package xld.model;
 import org.vertx.java.core.json.JsonObject;
 import org.vertx.java.core.json.JsonArray;
 
-/*
-	Special field for holding snowflake id-set
-	in database this is a bigint value, but on client side (and in every json) must be string,
-	client side json can't handle so long integers!
-
-*/
-public class IdField extends Field {
+public class IntegerField extends Field {
 	
 	
-	public IdField(ModelBase model, String fieldName) {
+	public IntegerField(ModelBase model, String fieldName) {
 		super(model, fieldName);
 	}
 	
@@ -25,30 +19,31 @@ public class IdField extends Field {
 	}
 	
 
-	/* Add value to json object */
 	public void addToJson(ModelBase.Row row, JsonObject jrow) {
 		Object val = row.get(fieldName);
-		jrow.putString(fieldName, val == null ? null : val.toString());
+		// in row must be null or Long
+		jrow.putNumber(fieldName, val == null ? null : (long)val);
 	}
-
-	/* Add value to json array */
-	public void addToJson(ModelBase.Row row, JsonArray jrow) {
-		Object val = row.get(fieldName);
-		jrow.addString(val == null ? null : val.toString());
-	}
-
-	/* Read value from json object */
+	
 	public void getFromJson(ModelBase.Row row, JsonObject jrow) {
 		Object val = jrow.getValue(fieldName);
 		val = parse(val);
 		row.set(fieldName, val);
 	}
 	
-	/* Read value from json array */
 	public void getFromJson(ModelBase.Row row, JsonArray jrow, int ix) {
 		row.set(fieldName, parse(jrow.get(ix)));
 	}
 
+	public void addToJson(ModelBase.Row row, JsonArray jrow) {
+		Object val = parse(row.get(fieldName));
+		if (val == null) {
+			jrow.add(null);
+		} else {
+			jrow.addNumber((long)val);
+		}
+	}
+	
 	public Object parse(Object val) {
 		if (val == null || val instanceof Long) {
 			return val == null ? null : val;

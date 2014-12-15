@@ -75,6 +75,12 @@ public class SqlRunner {
 		queue.add(q);
 	}
 	
+	
+	
+	public void prepared(String statement) {
+		prepared(statement, new Object[0]);
+	}
+	
 	public void prepared(String statement, Object[] values) {
 		JsonObject q = new JsonObject();
 		q.putString("action", "prepared");
@@ -100,6 +106,7 @@ public class SqlRunner {
 			node.eb().send("xld-sql-persist", q, new ApiHandler(apiHandler) {
 				public void handle() {
 					if (sqlError()) {
+						node.error(sqlMessage());
 						replyError(sqlMessage());
 						return;
 					} 

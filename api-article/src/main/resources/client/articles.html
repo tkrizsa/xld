@@ -9,6 +9,7 @@
 	<tr ng-repeat="article in s.articles._rows" class='selectable' ng-click='goForward(article.gui.href, $event)' >
 	
 		<td>{{article.articleName}}</td>
+		<td>{{article.articleId}}</td>
 	</tr>
 </table>
 </div>
