@@ -71,20 +71,6 @@ xld.Page = function(mainScope, ix, urlInfo) {
 		this.url		= this.urlInfo.url;
 	}
 	
-	this.close = function() {
-		console.log(this.mainScope);
-		console.log(this.ix);
-		delete this.mainScope.pages[this.ix];
-		
-		var $scope = this.mainScope;
-		setTimeout(function() {
-			$scope.$apply(function() {
-				$scope.setScroll();
-			});
-		});
-		
-	
-	};
 	
 	this.templateLoaded = function() {
 		this.mainScope.setScroll();
@@ -114,6 +100,85 @@ xld.Page = function(mainScope, ix, urlInfo) {
 		
 	}
 	
+	this.goForward = function($event, href, opener) {
+		$($event.target).closest('.selectable').parent().find('.selected').removeClass('selected');
+		$($event.target).closest('.selectable').addClass('selected');
+
+		var _bs = this.scope.getBrowserArray(this); // lastPage = this, close every page after this
+
+		var n = {
+			seg : 'main',
+			pos : _bs.pgs.length,
+			url : href
+		}
+		if (opener)
+			n.opener = opener;
+		_bs.pgs.push(n);
+		href = xld.addParameter(href, '_bs', this.scope.getBrowserEncoded(_bs));
+
+		this.scope.setUrl(href);
+	}
+
+	this.goForwardSub = function($event, href, opener) {
+		$($event.target).closest('.selectable').parent().find('.selected').removeClass('selected');
+		$($event.target).closest('.selectable').addClass('selected');
+
+		var _bs = this.scope.getBrowserArray(this); // lastPage = this, close every page after this
+		var n = {
+			seg : 'main',
+			pos : _bs.pgs.length,
+			url : href
+		}
+		if (opener)
+			n.opener = opener;
+		_bs.pgs.push(n);
+		newHref = xld.addParameter(this.url, '_bs', this.scope.getBrowserEncoded(_bs));
+		this.scope.setUrl(newHref);
+	}
+	
+	this.close = function() {
+		var lastPage = this.getPreviousPage();
+		if (lastPage) {
+			var _bs = this.scope.getBrowserArray(lastPage);
+			var url = _bs.pgs[_bs.pgs.length-1].url;
+			url = xld.addParameter(url, '_bs', this.scope.getBrowserEncoded(_bs));
+			this.scope.setUrl(url);
+		} else {
+			alert("close and not last page?");
+		}
+	};
+	
+	
+	this.goDefault = function($event, struct) {
+		$($event.target).closest('.selectable').parent().find('.selected').removeClass('selected');
+		$($event.target).closest('.selectable').addClass('selected');
+		if (this.opener) {
+			var lastPage = this.getPreviousPage();
+			lastPage.subpageResult(this.opener, struct);
+			this.close();
+		} else {
+			this.goForward($event, struct.gui.href);
+		}
+	}
+	
+	this.getPreviousPage = function() {
+		var ix = -1;
+		for (var i in this.mainScope.pages) {
+			if (!this.mainScope.pages.hasOwnProperty(i))
+				continue;
+			if (i<this.ix && i> ix)
+				ix = i;
+		}
+		return this.mainScope.pages[ix];
+	}
+
+	this.subpageResult = function(opener, struct) {
+		this.scope.$broadcast("subpageResult", {
+			key : opener,
+			value : struct
+		});
+	}
+	
 }
 
 /** ============================================== APP CONTROLLER ==================================================== **/
@@ -126,6 +191,10 @@ xldApp.controller('xldMain', ['$scope', '$location', '$timeout', '$templateCache
 	$scope.pendingUrls 	= [];
 	
 	xld.mainScope = $scope;
+	
+	$scope.setUrl = function(url) {
+		$location.url(url);
+	}
 	
 	$scope.$on('$locationChangeStart', function(e, newUrl, oldUrl){
 		// console.log('$locationChangeStart');
@@ -145,11 +214,13 @@ xldApp.controller('xldMain', ['$scope', '$location', '$timeout', '$templateCache
 			bs = JSON.parse(bs);
 		}
 		
-		bs.pgs.push({
-				seg : 'main',
-				pos : bs.pgs.length,
-				url : $scope.mainUrl
-		});
+		if (bs.pgs.length<=0) {
+			bs.pgs.push({
+					seg : 'main',
+					pos : bs.pgs.length,
+					url : $scope.mainUrl
+			});
+		}
 		
 		
 		console.log(bs);
@@ -187,7 +258,7 @@ xldApp.controller('xldMain', ['$scope', '$location', '$timeout', '$templateCache
 				p.url = '/home';
 			var urlInfo = $scope.parsePageUrl(p.url, true);
 			$scope.pages[ix] = new xld.Page($scope, ix, urlInfo);
-			
+			$scope.pages[ix].opener = p.opener;
 		}
 		
 		$scope.askPendingUrls();
@@ -350,11 +421,7 @@ xldApp.controller('xldMain', ['$scope', '$location', '$timeout', '$templateCache
 		$scroll[noAnimate?'css':'animate']({'left' : xl + 'px'  });
 	}
 	
-	$scope.setForward = function() {
-		$scope.forward = true;
-	}
-	
-	$scope.getBrowserState = function() {
+	$scope.getBrowserArray = function(lastPage) {
 		var bs = {};
 		bs.pgs = new Array();
 		var i = 0;
@@ -368,13 +435,17 @@ xldApp.controller('xldMain', ['$scope', '$location', '$timeout', '$templateCache
 				url : page.url
 			});
 			i++;
+			if (lastPage && lastPage == page) 
+				break;
 		}
-		if (bs.pgs.length == 0)
-			return '';
-		else {
-			return $.base64.encode(JSON.stringify(bs));;
-		}
+		return bs;
 	}
+	
+	
+	$scope.getBrowserEncoded = function(bs) {
+		return $.base64.encode(JSON.stringify(bs));;
+	}
+	
 	
 	$scope.goForward = function(href,  $event) {
 		console.log($event);
@@ -382,11 +453,16 @@ xldApp.controller('xldMain', ['$scope', '$location', '$timeout', '$templateCache
 		$($event.target).closest('.selectable').parent().find('.selected').removeClass('selected');
 		$($event.target).closest('.selectable').addClass('selected');
 	
-	
-		var _bs = $scope.getBrowserState();
 		var newHref = href;
-		if (_bs != '')
-			newHref = xld.addParameter(href, '_bs', _bs);
+		var _bs = $scope.getBrowserArray();
+		if (_bs.pgs.length>0) {
+			_bs.pgs.push({
+				seg : 'main',
+				pos : _bs.pgs.length,
+				url : newHref
+			});
+			newHref = xld.addParameter(href, '_bs', getBrowserEncoded(_bs));
+		}
 		$location.url(newHref);
 		
 	}
@@ -483,20 +559,19 @@ xldApp.controller('xldMain', ['$scope', '$location', '$timeout', '$templateCache
 		}
 	});
 	
-	xldApp.directive('xldForward', function () {
+	/*xldApp.directive('xldForward', function () {
 		return function (scope, element) {
 			element.click(function(e) {
-				var _bs = scope.getBrowserState();
+				var _bs = scope.getBrowserArray();
 				var oldHref = element.attr('href');
 				var newHref = oldHref;
 				if (_bs != '')
 					newHref = xld.addParameter(oldHref, '_bs', _bs);
 				element.attr('href', newHref);
-				//scope.setForward();
 			});	
 		
 		}
-	});
+	});*/
 	
 	xldApp.directive('xldPage', function () {
 		return function (scope, element, attrs) {
@@ -525,6 +600,35 @@ xldApp.controller('xldMain', ['$scope', '$location', '$timeout', '$templateCache
 				return 0;
 			});
 			return arr;
+		}
+	});
+
+
+
+
+	xldApp.directive('xldReferenceActorActor', function () {
+		return {
+			restrict: 'EA',
+			require: 'ngModel',
+			scope: {	
+				ngModel: '='
+			},
+			link: function($scope, elem, attrs, ngModel) {
+				elem.bind('click', function(e) {
+					$scope.$apply(function() {
+						$scope.$parent.page.goForwardSub(e, "/actors", "actorId");
+					});
+				});
+				
+				$scope.$on('subpageResult', function(e, sr) {
+					if (sr.key != 'actorId')
+						return;
+					ngModel.$setViewValue(sr.value.actorName);
+					ngModel.$render();
+				});
+				
+			
+			}
 		}
 	});
 

@@ -14,8 +14,9 @@
         <module>node</module>
         <module>site</module>
         <module>api</module>
-        <module>api-partner</module>
+        <module>api-actor</module>
         <module>api-article</module>
+        <module>api-order</module>
     </modules>
 	
 	<properties>

@@ -1,0 +1,7 @@
+{
+	"main" : "ModActor",
+	"auto-redeploy" : true,
+	"includes" : "xld~api~1.0"
+ 
+ 
+}

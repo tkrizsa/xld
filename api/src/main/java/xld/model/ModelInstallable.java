@@ -177,7 +177,7 @@ public class ModelInstallable extends ModelBase {
 			public void handle(AsyncResult<Buffer> ar) {
 				if (!ar.succeeded()) {
 					node.error("File not found.");
-					apiHandler.handle();
+					//apiHandler.handle();
 					return;
 				}
 				

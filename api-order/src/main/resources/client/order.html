@@ -1,0 +1,21 @@
+<div xld-page="2,2,2"  ng-controller='xldCtrlOrder' >
+<div class='xld-page-head'>
+	<div class='xld-col-2'>
+		<button ng-click='page.close()' class='button back'>Cancel</button>
+		<button ng-click='save()' class='button save right'>Save</button>
+	</div>
+</div>
+<div class='xld-page-pad xld-col-2' >
+	<label>Partner:</label><br/>
+	<input ng-model="s.order._rows[0].actorId" xld-reference-actor-actor /><br/>
+	{{s.order._rows[0].actorId}}<br/>
+	<label>Name:</label><br/>
+	<input ng-model="s.order._rows[0].orderName" /><br/>
+	<label>Description:</label><br/>
+	<textarea ng-model="s.order._rows[0].orderDescription"></textarea>
+	
+</div>
+
+
+</div>
+

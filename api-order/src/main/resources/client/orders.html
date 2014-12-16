@@ -1,0 +1,15 @@
+<div xld-page="2,2,2" ng-controller='xldCtrlOrders' class=''>
+<div class='xld-page-head'>
+	<div class='xld-col-2'>
+		<a class='button right' href='/orders/new' xld-forward >New order...</a>
+		<h1 >Orders</h1>
+	</div>
+</div>
+<table class='xld-list clickable xld-col-2' >
+	<tr ng-repeat="order in s.orders._rows" class='selectable' ng-click='page.goForward($event, order.gui.href)' >
+		<td>{{order.orderName}}</td>
+		<td>{{order.orderId}}</td>
+	</tr>
+</table>
+</div>
+

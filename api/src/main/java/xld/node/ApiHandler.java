@@ -116,6 +116,11 @@ public abstract class ApiHandler implements Handler<Message<JsonObject>> {
 		reply();	
 	}
 	
+	public void replyError(Exception ex) {
+		ex.printStackTrace();
+		replyError(ex.toString());
+	}
+	
 	/* -------------------------- sql -------------------------*/
 	
 	public String sqlStatus() {

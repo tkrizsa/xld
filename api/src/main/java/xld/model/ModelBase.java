@@ -4,8 +4,10 @@ package xld.model;
 import xld.model.Field;
 import xld.node.Node;
 import xld.node.ApiHandler;
+
 import xld.model.IdField;
 import xld.model.StringPropField;
+import xld.model.ReferenceField;
 
 
 import org.vertx.java.core.json.JsonObject;
@@ -120,6 +122,12 @@ public class ModelBase implements Iterable {
 		return f;
 	}
 	
+	public ReferenceField fieldAddReference(String fieldName, Class<? extends Model> referenceModel) {
+		ReferenceField f = new ReferenceField(this, fieldName, referenceModel);
+		fieldAdd(f);
+		return f;
+	}
+	
 	public int fieldIx(String fieldName) {
 		int ix = -1;
 		for (Field f : fields) {
@@ -224,7 +232,7 @@ public class ModelBase implements Iterable {
 	}
 	
 	/* ===================================================== SQL ====================================================== */
-	public String keySqlWhere(String keys) {
+	public String keySqlWhere(String keys) throws Exception {
 		String where = " (";
 		String[] keysa = keys.split(KEY_SEPARATOR);
 		int i = 0;
@@ -246,7 +254,11 @@ public class ModelBase implements Iterable {
 	}
 	
 	public void sqlLoadByKeys(String keys, final ApiHandler apiHandler) {
-		sqlLoad("SELECT * FROM `" + getTableName() + "` WHERE " + keySqlWhere(keys), apiHandler);
+		try {
+			sqlLoad("SELECT * FROM `" + getTableName() + "` WHERE " + keySqlWhere(keys), apiHandler);
+		} catch (Exception ex) {
+			apiHandler.replyError(ex);
+		}
 	}
 	
 	
@@ -308,7 +320,7 @@ public class ModelBase implements Iterable {
 				try {
 					sqlJsonRead(ar.body());
 				} catch (Exception ex) {
-					apiHandler.replyError(ex.getMessage());
+					apiHandler.replyError(ex);
 				}
 				apiHandler.handle();
 			}

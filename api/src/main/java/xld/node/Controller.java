@@ -12,30 +12,6 @@ public  class Controller {
 	public Controller(Node node, Class<? extends Model> modelClass) {
 		this.node = node;
 		this.modelClass = modelClass;
-		
-		// try {
-			// Model m;
-			// info("==================== itt ====================");
-			// m = mt.getConstructor(Node.class).newInstance(this);
-			// Article aa = new Article(this);
-			// info(m.getModelIdPlural());
-			// info(aa.getModelIdPlural());
-			// info("==================== ott ====================");
-			
-			/*Method mm = mt.getDeclaredMethod("getModelId" );
-			mm.setAccessible(true); //if security settings allow this
-			Object o = mm.invoke(null, 23); //use null if the method is static*/
-			
-			// Field f = mt.getField("MODEL_ID");
-			// info(f.get(null));
-			
-		// } catch (Exception ex) {
-			// error("==== error ====");
-			// error(ex.getMessage());
-		// }
-		
-		
-		
 	}
 	
 
