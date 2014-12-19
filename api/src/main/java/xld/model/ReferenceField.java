@@ -17,6 +17,12 @@ public class ReferenceField extends IdField {
 		this.referenceModel = referenceModel;
 	}
 	
+	@Override 
+	public ReferenceField getClone(ModelBase model) {
+		return new ReferenceField(model, getFieldName(), referenceModel);
+	}
+	
+	
 	public boolean isPrimaryKey() {
 		return false;
 	}

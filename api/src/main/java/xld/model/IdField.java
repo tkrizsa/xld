@@ -16,6 +16,11 @@ public class IdField extends Field {
 		super(model, fieldName);
 	}
 	
+	@Override 
+	public Field getClone(ModelBase model) {
+		return new IdField(model, getFieldName());
+	}
+	
 	public boolean isPrimaryKey() {
 		return true;
 	}

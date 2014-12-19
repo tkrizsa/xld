@@ -12,6 +12,11 @@ public class StringPropField extends Field {
 		this.maxLength = maxLength;
 	}
 	
+	@Override 
+	public StringPropField getClone(ModelBase model) {
+		return new StringPropField(model, getFieldName(), maxLength);
+	}
+	
 	public void addToJson(ModelBase.Row row, JsonObject jrow) {
 		String val = (String)row.get(fieldName);
 		jrow.putString(fieldName, val);

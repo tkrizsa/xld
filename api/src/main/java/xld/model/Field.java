@@ -42,6 +42,8 @@ public abstract class Field {
 	public String toString() {
 		return getFieldName();
 	}
+	
+	public abstract Field getClone(ModelBase model);
 		
 }
 

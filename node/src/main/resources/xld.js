@@ -103,6 +103,14 @@ var Node = function() {
 		});
 	}
 
+	this.httpFile = function(pattern, path) {
+		eb.publish('xld-register-http', {
+			kind 	: 'sitefile',
+			pattern : pattern,
+			path 	: path
+		});
+	}
+
 
 	this.template = function(templatePattern, indexPattern, fileName) {
 		if (!this.moduleName)

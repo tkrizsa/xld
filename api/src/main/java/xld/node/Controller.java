@@ -68,8 +68,23 @@ public  class Controller {
 			public void handle(final ApiHandler apiHandler) {
 			
 				final Model a = createModel();
+				
+				// Set expands
+				String expand = apiHandler.getParam("_expand");
+				if (expand != null) {
+					try {
+						a.setCurrExpand(expand);
+					} catch(Exception ex) {
+						apiHandler.replyError(ex);
+						return;
+					}
+				}
+				
+				
+				// Load from sql
 				a.sqlLoadList(new ApiHandler(apiHandler) {
 					public void handle() {
+						// Get result json and reply
 						try {
 							body(a.jsonGet());
 							contentType("application/json");
@@ -126,7 +141,12 @@ public  class Controller {
 				String keys = apiHandler.getParam("id");
 				
 				String s =  apiHandler.getMessage().body().getString("body");
-				a.loadFromJson(new JsonObject(s));
+				try {
+					a.loadFromJson(new JsonObject(s));
+				} catch(Exception ex) {
+					apiHandler.replyError(ex);
+					return;
+				}
 				
 				a.sqlSave(new ApiHandler(apiHandler) {
 					public void handle() {

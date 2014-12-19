@@ -21,6 +21,8 @@ public class Order extends Model {
 		fieldAddStringProp("orderName", 100);
 		fieldAddStringProp("orderDescription", 65536);
 		fieldAddReference("actorId", Actor.class);
+		
+
 	}
 	
 	

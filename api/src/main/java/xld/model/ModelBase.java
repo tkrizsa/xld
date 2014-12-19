@@ -86,8 +86,33 @@ public class ModelBase implements Iterable {
 		return modelId;
 	}
 	
+	public static String getModelId(Class<? extends Model> mt) {
+		String modelId = "xxx";
+		try {
+			java.lang.reflect.Field f = mt.getField("MODEL_ID");
+			modelId = f.get(null).toString();
+		} catch (Exception ex) {
+		}
+		return modelId;
+	}
+	
 	public String getModelIdPlural() {
 		return this.getModelId() + "s";
+	}
+	
+	public static ModelBase createModel(Node node, Class<? extends Model> mt) {
+		ModelBase model = null;
+		try {
+			model = mt.getConstructor(Node.class).newInstance(node);
+		} catch (Exception ex) {
+			node.error("==== createModel error ====");
+			node.error(ex.getMessage());
+		}
+		return model;	
+	}
+	
+	public ModelBase createModel( Class<? extends Model> mt) {
+		return createModel(node, mt);
 	}
 	
 	// versionString
@@ -125,8 +150,14 @@ public class ModelBase implements Iterable {
 	public ReferenceField fieldAddReference(String fieldName, Class<? extends Model> referenceModel) {
 		ReferenceField f = new ReferenceField(this, fieldName, referenceModel);
 		fieldAdd(f);
+		
+		String rModelId = getModelId(referenceModel);
+		expandAdd(rModelId, referenceModel, f);
+		
 		return f;
 	}
+	
+
 	
 	public int fieldIx(String fieldName) {
 		int ix = -1;
@@ -152,6 +183,70 @@ public class ModelBase implements Iterable {
 		return fields.size();
 	
 	}
+	
+	
+	
+	
+	
+	// ----------- expands ------------
+	protected static class Expand {
+		String 		expandKey;
+		Class<? extends Model> modelClass;
+		List<Field> foreignKeys;
+		ModelBase 	model;
+		boolean 	viewOnly = false;
+	}
+	protected List<Expand> expands = new ArrayList<Expand>();
+	protected List<Expand> currExpands = new ArrayList<Expand>();
+	
+	
+	public void expandAdd(String expandKey, Class<? extends Model> modelClass, Field foreignKey) {
+		Expand e = new Expand();
+		e.expandKey 	= expandKey;
+		e.modelClass 	= modelClass;
+		e.foreignKeys 	= new ArrayList<Field>();
+		e.foreignKeys.add(foreignKey);
+		expands.add(e);
+	}
+	
+	public Expand expandByKey(String expandKey) {
+		for (Expand e : expands) {
+			if (e.expandKey.equals(expandKey))
+				return e;
+		}
+		return null;
+	}
+	
+	public void setCurrExpand(String currExpandStr) throws Exception {
+		String[] cesa = currExpandStr.split(",");
+		for (int i = 0; i < cesa.length; i++) {
+			String ces = cesa[i];
+			boolean viewOnly = false;
+			if (ces.endsWith("*")) {
+				viewOnly = true;
+				ces = ces.substring(0, ces.length()-1);
+			}
+			Expand e = expandByKey(ces);
+			if (e == null) {
+				throw new Exception("Unknown expand key in model '" + getModelId() + "' : '" + ces + "'");
+			}
+			e.model = createModel(e.modelClass);
+			currExpands.add(e);
+			if (viewOnly) {
+				e.viewOnly = true;
+				for (Field f : e.model.fields) {
+					Field ff = fieldByName(f.getFieldName());
+					if (ff == null) {
+						fieldAdd(f.getClone(this));
+					}
+				}
+			}
+		}
+	}
+
+	
+	
+	// ----------- row functions ------------
 	
 	
 	public void clear() {
@@ -217,8 +312,17 @@ public class ModelBase implements Iterable {
 		return keys;
 	}
 	
+	/* just a trial, not used yet. not sure if useful. consider no return value! */
+	public void loadFromJson(JsonObject jdata, ApiHandler apiHandler) {
+		try {
+			loadFromJson(jdata);
+		} catch (Exception ex) {
+			apiHandler.replyError(ex.toString());
+		}
+	}
 	
-	public void loadFromJson(JsonObject jdata) {
+	
+	public void loadFromJson(JsonObject jdata) throws Exception {
 		clear();
 		JsonArray jrows = jdata.getArray("rows");
 		for (int ix = 0; ix < jrows.size(); ix++) {
@@ -250,7 +354,20 @@ public class ModelBase implements Iterable {
 	
 	
 	public void sqlLoadList(final ApiHandler apiHandler) {
-		sqlLoad("SELECT * FROM `" + getTableName() + "`", apiHandler);
+		StringBuilder s = new StringBuilder();
+		s.append("SELECT * FROM `" + getTableName() + "` AS t0\r\n");
+		int ti = 1;
+		for (Expand e : currExpands) {
+			s.append("LEFT JOIN `" + e.model.getTableName() + "` AS t" + ti + " ON ");
+			boolean ffirst = true;
+			for (Field f : e.foreignKeys) {
+				s.append((ffirst?"":" AND ")+" t" + ti + ".`" + f.getFieldName() + "` = t0.`" + f.getFieldName() + "`");
+				ffirst = false;
+			}
+			s.append("\r\n");
+			ti++;
+		}
+		sqlLoad(s.toString(), apiHandler);
 	}
 	
 	public void sqlLoadByKeys(String keys, final ApiHandler apiHandler) {
@@ -263,7 +380,6 @@ public class ModelBase implements Iterable {
 	
 	
 	private void sqlJsonRead(JsonObject json) {
-	
 		JsonArray jfields = json.getArray("fields");
 		
 		int[] fmap = new int[fields.size()];
@@ -301,7 +417,12 @@ public class ModelBase implements Iterable {
 		}
 	}
 	
-	public void sqlLoad(String query,  final ApiHandler apiHandler) {
+	
+	public void sqlLoad(final String query,  final ApiHandler apiHandler) {
+	
+		node.info("------------------------------------------------------------");
+		node.info(query);
+		node.info("------------------------------------------------------------");
 	
 		clear();
 				
@@ -314,6 +435,8 @@ public class ModelBase implements Iterable {
 		node.eb().send("xld-sql-persist", q, new Handler<Message<JsonObject>>() {
 			public void handle(final Message<JsonObject> ar) {
 				if (!("ok".equals(ar.body().getString("status")))) {
+					node.error(query);
+					node.error(ar.body().getString("message"));
 					apiHandler.replyError(ar.body().getString("message"));
 					return;
 				}

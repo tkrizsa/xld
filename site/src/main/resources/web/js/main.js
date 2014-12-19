@@ -441,6 +441,11 @@ xldApp.controller('xldMain', ['$scope', '$location', '$timeout', '$templateCache
 		return bs;
 	}
 	
+	$scope.addBrowserPage = function(bs, p) {
+		p.pos = bs.pgs.length;
+		bs.pgs.push(p);
+	}
+	
 	
 	$scope.getBrowserEncoded = function(bs) {
 		return $.base64.encode(JSON.stringify(bs));;
@@ -559,19 +564,21 @@ xldApp.controller('xldMain', ['$scope', '$location', '$timeout', '$templateCache
 		}
 	});
 	
-	/*xldApp.directive('xldForward', function () {
+	xldApp.directive('xldForward', function () {
 		return function (scope, element) {
 			element.click(function(e) {
-				var _bs = scope.getBrowserArray();
+				var _bs = scope.getBrowserArray(scope.page);
 				var oldHref = element.attr('href');
 				var newHref = oldHref;
-				if (_bs != '')
-					newHref = xld.addParameter(oldHref, '_bs', _bs);
+				if (_bs) {
+					scope.addBrowserPage(_bs, {seg : 'main', url : newHref});
+					newHref = xld.addParameter(oldHref, '_bs', scope.getBrowserEncoded(_bs));
+				}
 				element.attr('href', newHref);
 			});	
 		
 		}
-	});*/
+	});
 	
 	xldApp.directive('xldPage', function () {
 		return function (scope, element, attrs) {
