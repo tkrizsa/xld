@@ -108,7 +108,20 @@ public  class Controller {
 			
 				final Model a = createModel();
 				String keys = apiHandler.getMessage().body().getObject("params").getString("id");
-				
+
+
+				// Set expands
+				String expand = apiHandler.getParam("_expand");
+				if (expand != null) {
+					try {
+						a.setCurrExpand(expand);
+					} catch(Exception ex) {
+						apiHandler.replyError(ex);
+						return;
+					}
+				}
+
+				// Handle new item template
 				if ("new".equals(keys)) {
 					a.rowAdd();
 					apiHandler.body(a.jsonGet());
@@ -138,7 +151,18 @@ public  class Controller {
 			public void handle(final ApiHandler apiHandler) {
 			
 				final Model a = createModel();
-				String keys = apiHandler.getParam("id");
+
+				// Set expands
+				String expand = apiHandler.getParam("_expand");
+				if (expand != null) {
+					try {
+						a.setCurrExpand(expand);
+					} catch(Exception ex) {
+						apiHandler.replyError(ex);
+						return;
+					}
+				}
+
 				
 				String s =  apiHandler.getMessage().body().getString("body");
 				try {

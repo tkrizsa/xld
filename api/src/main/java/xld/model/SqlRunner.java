@@ -33,6 +33,15 @@ public class SqlRunner {
 		for (Field field : model.getFields()) {
 			jfields.addString(field.getFieldName());
 			field.addToJson(row, jvalues);
+			/*if (!model.isFieldExpanded(field)) {
+				field.addToJson(row, jvalues);
+			} else {
+				Model.Expand e = field.getExpand();
+				field.addToJson(e.
+				for (Model.Expand e : model.currExpands) {
+				
+				}
+			}*/
 		}
 		q.putArray("fields", jfields);
 		jrows.addArray(jvalues);

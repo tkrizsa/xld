@@ -269,22 +269,25 @@ xldApp.controller('xldMain', ['$scope', '$location', '$timeout', '$templateCache
 	});
 	
 	$scope.parsePageUrl = function(url, tryLoadParser) {
-		var urlx = url;
+		/*var urlx = url;
 		if (urlx.substr(0,1)=='/')
 			urlx = urlx.substr(1);
-		var urla = urlx.split('/');
+		var urla = urlx.split('/');*/
+		var urla = URI(url).segment();
+		var urlx = "/" + urla.join("/");
+		
 		for (var i in $scope.urlParsers) {
 			var parser = $scope.urlParsers[i];
-			var info = parser(url, urla);
+			var info = parser(urlx, urla);
 			if (info) {
 				return info;
 			}
 		}
 		
 		if (tryLoadParser)
-			$scope.pendingUrls.push(url);
+			$scope.pendingUrls.push(urlx);
 		return {
-			url : url,
+			url : urlx,
 			template : false,
 			params : false,
 			pending : true
@@ -615,25 +618,38 @@ xldApp.controller('xldMain', ['$scope', '$location', '$timeout', '$templateCache
 
 	xldApp.directive('xldReferenceActorActor', function () {
 		return {
-			restrict: 'EA',
+			restrict: 'E',
 			require: 'ngModel',
+			template: "<input type='text' ng-model='searchterm' />",
 			scope: {	
 				ngModel: '='
 			},
 			link: function($scope, elem, attrs, ngModel) {
-				elem.bind('click', function(e) {
+				$scope.searchterm = '';
+				
+				changed = function(e) {
 					$scope.$apply(function() {
 						$scope.$parent.page.goForwardSub(e, "/actors", "actorId");
 					});
-				});
+				}
+				
+				elem.bind('keyup', changed);
+				
 				
 				$scope.$on('subpageResult', function(e, sr) {
 					if (sr.key != 'actorId')
 						return;
-					ngModel.$setViewValue(sr.value.actorName);
+					ngModel.$setViewValue(sr.value);
 					ngModel.$render();
 				});
 				
+				ngModel.$render = function() {
+					var text = '';
+					if (ngModel.$viewValue)
+						text = ngModel.$viewValue.actorName;
+					elem.find('input').val(text);
+				};
+
 			
 			}
 		}

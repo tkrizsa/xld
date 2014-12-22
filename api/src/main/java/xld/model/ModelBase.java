@@ -26,6 +26,8 @@ import javax.naming.OperationNotSupportedException;
 import org.vertx.java.core.AsyncResult;
 import org.vertx.java.core.AsyncResultHandler;
 
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class ModelBase implements Iterable {
@@ -185,7 +187,15 @@ public class ModelBase implements Iterable {
 	}
 	
 	
-	
+	protected List<Field> fieldGetSqlFieldList() {
+		List<Field> sf = new ArrayList<Field>();
+		for (Field field : fields) {
+			if (field.getSqlField()) {
+				sf.add(field);
+			}
+		}
+		return sf;
+	}
 	
 	
 	// ----------- expands ------------
@@ -206,6 +216,7 @@ public class ModelBase implements Iterable {
 		e.modelClass 	= modelClass;
 		e.foreignKeys 	= new ArrayList<Field>();
 		e.foreignKeys.add(foreignKey);
+		foreignKey.setExpand(e);
 		expands.add(e);
 	}
 	
@@ -237,14 +248,20 @@ public class ModelBase implements Iterable {
 				for (Field f : e.model.fields) {
 					Field ff = fieldByName(f.getFieldName());
 					if (ff == null) {
-						fieldAdd(f.getClone(this));
+						f.cloneToMasterView(this);
 					}
 				}
-			}
+			} 
 		}
 	}
 
-	
+	public boolean isFieldExpanded(Field f) {
+		for(Expand e : currExpands) {
+			if (!e.viewOnly && e.foreignKeys.contains(f)) 
+				return true;
+		}
+		return false;
+	}
 	
 	// ----------- row functions ------------
 	
@@ -272,15 +289,31 @@ public class ModelBase implements Iterable {
 		JsonArray jrows = new JsonArray();
 		jres.putArray("rows", jrows);
 		for (Row row : rows) {
-			JsonObject jrow = new JsonObject();
-			for (Field field : fields) {
-				field.addToJson(row, jrow);
+			JsonObject jrow = jsonGetRow(row);
+			for (Expand e : currExpands) {
+				if (!e.viewOnly) {
+					Row erow = row.getExpandedRow(e);
+					if (erow != null) {
+						jrow.putObject(e.expandKey, e.model.jsonGetRow(erow));
+					} else {
+						jrow.putObject(e.expandKey, null);
+					}
+				}
 			}
-			jsonAddLinks(row, jrow);
 			jrows.addObject(jrow);
-			//node.info(row.get("articleId") + " : " + row.get("articleName"));
 		}
 		return jres.toString();
+	}
+	
+	public JsonObject jsonGetRow(Row row) {
+		JsonObject jrow = new JsonObject();
+		for (Field field : fields) {
+			if (isFieldExpanded(field))
+				continue;
+			field.addToJson(row, jrow);
+		}
+		jsonAddLinks(row, jrow);
+		return jrow;
 	}
 	
 	protected void jsonAddLinks(Row row, JsonObject jrow) {
@@ -329,14 +362,40 @@ public class ModelBase implements Iterable {
 			JsonObject jrow = jrows.get(ix);
 			node.info(jrow);
 			Row row = rowAdd();
-			for (Field f : fields) {
-				f.getFromJson(row, jrow);
+			loadFromJsonRow(row, jrow);
+		}
+		node.info("------------------------- LOAD FROM JSON RESULT  --------------------------------");
+		node.info(jsonGet());
+		node.info("------------------------- LOAD FROM JSON RESULT  --------------------------------");
+	}
+	
+	public void loadFromJsonRow(Row row, JsonObject jrow) {
+		for (Expand e : currExpands) {
+			if (e.viewOnly)
+				continue;
+			Row erow = e.model.rowAdd();		
+			JsonObject jerow = jrow.getObject(e.expandKey);
+			if (jerow != null) {
+				row.addExpandedRow(e, erow);
+				e.model.loadFromJsonRow(erow, jerow);
 			}
 		}
+		
+		for (Field f : fields) {
+			if (!isFieldExpanded(f)) {
+				f.getFromJson(row, jrow);
+			} else {
+				Expand e = f.getExpand();
+				row.set(f.getFieldName(), row.getExpandedRow(e).get(f.getFieldName()));
+			}
+		}
+		
 	}
 	
 	/* ===================================================== SQL ====================================================== */
-	public String keySqlWhere(String keys) throws Exception {
+	public String keySqlWhere(String keys, String tablePrefix) throws Exception {
+		if (tablePrefix == null)
+			tablePrefix = "";
 		String where = " (";
 		String[] keysa = keys.split(KEY_SEPARATOR);
 		int i = 0;
@@ -345,7 +404,7 @@ public class ModelBase implements Iterable {
 				continue;
 			if (i>0)
 				where += " AND ";
-			where += "`" + field.getFieldName() + "` = '" + keysa[i] + "'";
+			where += tablePrefix + "`" + field.getFieldName() + "` = '" + keysa[i] + "'";
 			i++;
 		}
 		return where + ") ";
@@ -354,9 +413,29 @@ public class ModelBase implements Iterable {
 	
 	
 	public void sqlLoadList(final ApiHandler apiHandler) {
+		sqlLoadList(apiHandler, null);
+	}
+	
+	public void sqlLoadList(final ApiHandler apiHandler, String keys) {
 		StringBuilder s = new StringBuilder();
-		s.append("SELECT * FROM `" + getTableName() + "` AS t0\r\n");
+		s.append("SELECT \r\n\t");
+		boolean firstField = true;
+		for (Field field : fieldGetSqlFieldList()) {
+			s.append((firstField?"":", ") + "t0.`" + field.getFieldName() + "`");
+			firstField = false;
+		}
 		int ti = 1;
+		for (Expand e : currExpands) {
+			s.append("\r\n\t");
+			for (Field field : e.model.fieldGetSqlFieldList()) {
+				s.append((firstField?"":", ") + "t" + ti + ".`" + field.getFieldName() + "`");
+				firstField = false;
+			}
+			ti++;
+		}
+		
+		s.append("\r\nFROM `" + getTableName() + "` AS t0 \r\n");
+		ti = 1;
 		for (Expand e : currExpands) {
 			s.append("LEFT JOIN `" + e.model.getTableName() + "` AS t" + ti + " ON ");
 			boolean ffirst = true;
@@ -367,19 +446,68 @@ public class ModelBase implements Iterable {
 			s.append("\r\n");
 			ti++;
 		}
+		if (keys != null) {
+			try {
+				s.append("WHERE " + keySqlWhere(keys, "t0."));
+			} catch (Exception ex) {
+				apiHandler.replyError(ex);
+			}
+		}
+		
 		sqlLoad(s.toString(), apiHandler);
 	}
 	
 	public void sqlLoadByKeys(String keys, final ApiHandler apiHandler) {
-		try {
-			sqlLoad("SELECT * FROM `" + getTableName() + "` WHERE " + keySqlWhere(keys), apiHandler);
-		} catch (Exception ex) {
-			apiHandler.replyError(ex);
-		}
+		sqlLoadList(apiHandler, keys);
 	}
 	
 	
 	private void sqlJsonRead(JsonObject json) {
+		/* save Current Sql Field List into a list from this model */
+		List<Field> cfs = fieldGetSqlFieldList();
+		/* save the same, for all the expands */
+		List<List<Field>> cefs = new ArrayList<List<Field>>();
+		for (Expand e : currExpands) {
+			cefs.add(e.model.fieldGetSqlFieldList());
+			
+		}
+		
+		
+		JsonArray jresults = json.getArray("results");
+		Iterator<Object> jresultIt = jresults.iterator();
+		while (jresultIt.hasNext()) {
+			JsonArray jrow = (JsonArray)jresultIt.next();
+			Row row = rowAdd();
+			int fix = 0;
+			for (Field field : cfs) {
+				field.getFromJson(row, jrow, fix);
+				fix++;
+			}
+			int eix = 0;
+			for (Expand e : currExpands) {
+				if (e.viewOnly) {
+					for (Field field : cefs.get(eix)) {
+						Field thisField = field.getMasterView();
+						if (thisField != null) {
+							thisField.getFromJson(row, jrow, fix);
+						}
+						fix++;
+					}
+				
+				} else {
+					Row erow = e.model.rowAdd();
+					for (Field field : cefs.get(eix)) {
+						field.getFromJson(erow, jrow, fix);
+						fix++;
+					}
+					row.addExpandedRow(e, erow);
+				}
+				eix ++;
+			}	
+		}
+	}
+	
+	private void sqlJsonReadByName(JsonObject json) {
 		JsonArray jfields = json.getArray("fields");
 		
 		int[] fmap = new int[fields.size()];
@@ -537,36 +665,14 @@ public class ModelBase implements Iterable {
 	
 	}
 	
-	/*protected String sqlGetInsertQuery(Row row) {
-		StringBuilder query = new StringBuilder();
-		StringBuilder values = new StringBuilder();
-		query.append("INSERT INTO `" + getTableName() + "` (\r\n");
-		boolean first = true;
-		for (Field field : fields) {
-			
-			query.append((first?"":", ") + "`" + field.getFieldName() + "`");
-			
-			values.append((first?"":", ") + field.sqlValue(row));
-			
-			first = false;
-		}
-		
-		query.append("\r\n) VALUES (\r\n").append(values).append("\r\n)");
-		
-		
-		
-		return query.toString();
-	}
-	
-	protected String sqlGetUpdateQuery(Row row) {
-		return "Update not yet implemented...";
-	}*/
 	
 	/* ===================================================== Row ====================================================== */
 	
 	public static class Row {
 		private final ModelBase model;
 		private Object[] data;
+		private Map<Expand,Row> expands;
+		
 		
 		public Row(ModelBase model) {
 			this.model = model;
@@ -611,6 +717,30 @@ public class ModelBase implements Iterable {
 			
 			}
 			return false;
+		}
+		
+		public void addExpandedRow(Expand expand, Row row) {
+			if (expands == null)
+				expands = new HashMap<Expand, Row>();
+				
+			expands.put(expand, row);
+		}
+		
+		public Row getExpandedRow(Expand expand) {
+			return expands == null ? null : expands.get(expand);
+		}
+		
+		@Override
+		public String toString() {
+			StringBuilder sb = new StringBuilder();
+			sb.append(data.length + " : {");
+			boolean first = true;
+			for(int i = 0; i < data.length; i++) {
+				sb.append((first?"":",") + (data[i]==null?"[null]":data[i].toString()));
+				first = false;
+			}
+			sb.append("}");
+			return sb.toString();
 		}
 		
 	}

@@ -32,6 +32,8 @@ public class IdField extends Field {
 
 	/* Add value to json object */
 	public void addToJson(ModelBase.Row row, JsonObject jrow) {
+		if (row == null)
+			model.node.error("row is null!!!!");
 		Object val = row.get(fieldName);
 		jrow.putString(fieldName, val == null ? null : val.toString());
 	}
