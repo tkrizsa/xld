@@ -2,7 +2,7 @@
 
 xldApp.__controllerProvider.register('xldCtrlOrders', ['$scope', function ($scope) {
 	var pg = $scope.page.init($scope);
-	$scope.page.getStruct('orders', '/api/orders?_expand=actor*')
+	$scope.page.getStruct('orders', '/api/orders?_expand=deliveryActor')
 	.than(function(resp) {
 		console.log(resp);
 		console.log($scope.s);

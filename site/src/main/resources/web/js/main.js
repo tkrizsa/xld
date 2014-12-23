@@ -622,14 +622,15 @@ xldApp.controller('xldMain', ['$scope', '$location', '$timeout', '$templateCache
 			require: 'ngModel',
 			template: "<input type='text' ng-model='searchterm' />",
 			scope: {	
-				ngModel: '='
+				ngModel: '=',
+				openerKey : '@'
 			},
 			link: function($scope, elem, attrs, ngModel) {
 				$scope.searchterm = '';
 				
 				changed = function(e) {
 					$scope.$apply(function() {
-						$scope.$parent.page.goForwardSub(e, "/actors", "actorId");
+						$scope.$parent.page.goForwardSub(e, "/actors", $scope.openerKey);
 					});
 				}
 				
@@ -637,7 +638,7 @@ xldApp.controller('xldMain', ['$scope', '$location', '$timeout', '$templateCache
 				
 				
 				$scope.$on('subpageResult', function(e, sr) {
-					if (sr.key != 'actorId')
+					if (sr.key != $scope.openerKey)
 						return;
 					ngModel.$setViewValue(sr.value);
 					ngModel.$render();

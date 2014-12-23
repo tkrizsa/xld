@@ -6,9 +6,16 @@
 	</div>
 </div>
 <div class='xld-page-pad xld-col-2' >
-	<label>Partner:</label><br/>
-	<xld-reference-actor-actor ng-model="s.order._rows[0].actor"  ></xld-reference-actor-actor><br/>
-	<span style="font-size:8px; color:#aaa;">{{s.order._rows[0].actor.actorId}} &nbsp;&nbsp;	{{s.order._rows[0].actor.actorName}}</span><br/>
+	<label>Delivery To:</label><br/>
+	<xld-reference-actor-actor ng-model="s.order._rows[0].deliveryActor" opener-key="delivery-actor"  ></xld-reference-actor-actor><br/>
+	<span style="font-size:8px; color:#aaa;">{{s.order._rows[0].deliveryActor.actorId}} &nbsp;&nbsp;	{{s.order._rows[0].deliveryActor.actorName}}</span><br/>
+	
+	<label>Invoice To:</label><br/>
+	<xld-reference-actor-actor ng-model="s.order._rows[0].invoiceActor" opener-key="invoice-actor" ></xld-reference-actor-actor><br/>
+	<span style="font-size:8px; color:#aaa;">{{s.order._rows[0].invoiceActor.actorId}} &nbsp;&nbsp;	{{s.order._rows[0].invoiceActor.actorName}}</span><br/>
+	
+	
+	
 	<label>Name:</label><br/>
 	<input ng-model="s.order._rows[0].orderName" /><br/>
 	<label>Description:</label><br/>

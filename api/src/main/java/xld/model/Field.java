@@ -50,6 +50,10 @@ public abstract class Field {
 		row.set(fieldName, parse(val));
 	}
 	
+	public Object get(ModelBase.Row row) {
+		return row.get(fieldName);
+	}
+	
 	@Override
 	public String toString() {
 		return getFieldName();
@@ -76,6 +80,12 @@ public abstract class Field {
 	public Model.Expand getExpand() {
 		return this.expand;
 	}
+	
+	public boolean isFieldExpanded() {
+		Model.Expand e = getExpand();
+		return (e!=null && !e.viewOnly);
+	}
+	
 	
 	
 }

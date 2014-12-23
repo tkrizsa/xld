@@ -150,11 +150,15 @@ public class ModelBase implements Iterable {
 	}
 	
 	public ReferenceField fieldAddReference(String fieldName, Class<? extends Model> referenceModel) {
+		return fieldAddReference(fieldName, referenceModel, getModelId(referenceModel));
+	}
+	
+	public ReferenceField fieldAddReference(String fieldName, Class<? extends Model> referenceModel, String expandKey) {
 		ReferenceField f = new ReferenceField(this, fieldName, referenceModel);
 		fieldAdd(f);
 		
-		String rModelId = getModelId(referenceModel);
-		expandAdd(rModelId, referenceModel, f);
+		
+		expandAdd(expandKey, referenceModel, f);
 		
 		return f;
 	}
@@ -199,12 +203,23 @@ public class ModelBase implements Iterable {
 	
 	
 	// ----------- expands ------------
+	
+	protected static class KeyPair {
+		Field foreignKey;
+		Field referencedKey;
+		
+		public KeyPair(Field foreignKey, Field referencedKey) {
+			this.foreignKey    = foreignKey;
+			this.referencedKey = referencedKey;
+		}
+	}
+	
 	protected static class Expand {
-		String 		expandKey;
-		Class<? extends Model> modelClass;
-		List<Field> foreignKeys;
-		ModelBase 	model;
-		boolean 	viewOnly = false;
+		String 					expandKey;
+		Class<? extends Model> 	modelClass;
+		List<KeyPair> 			keys;
+		ModelBase 				model;
+		boolean 				viewOnly = false;
 	}
 	protected List<Expand> expands = new ArrayList<Expand>();
 	protected List<Expand> currExpands = new ArrayList<Expand>();
@@ -212,10 +227,17 @@ public class ModelBase implements Iterable {
 	
 	public void expandAdd(String expandKey, Class<? extends Model> modelClass, Field foreignKey) {
 		Expand e = new Expand();
-		e.expandKey 	= expandKey;
-		e.modelClass 	= modelClass;
-		e.foreignKeys 	= new ArrayList<Field>();
-		e.foreignKeys.add(foreignKey);
+		e.expandKey 	 = expandKey;
+		e.modelClass 	 = modelClass;
+		e.keys		 	 = new ArrayList<KeyPair>();
+		
+		e.model = createModel(e.modelClass);
+		for (Field f : e.model.fields) {
+			if (f.isPrimaryKey()) {
+				e.keys.add(new KeyPair(foreignKey, f));
+			}
+		}
+		
 		foreignKey.setExpand(e);
 		expands.add(e);
 	}
@@ -241,7 +263,6 @@ public class ModelBase implements Iterable {
 			if (e == null) {
 				throw new Exception("Unknown expand key in model '" + getModelId() + "' : '" + ces + "'");
 			}
-			e.model = createModel(e.modelClass);
 			currExpands.add(e);
 			if (viewOnly) {
 				e.viewOnly = true;
@@ -255,13 +276,6 @@ public class ModelBase implements Iterable {
 		}
 	}
 
-	public boolean isFieldExpanded(Field f) {
-		for(Expand e : currExpands) {
-			if (!e.viewOnly && e.foreignKeys.contains(f)) 
-				return true;
-		}
-		return false;
-	}
 	
 	// ----------- row functions ------------
 	
@@ -308,7 +322,7 @@ public class ModelBase implements Iterable {
 	public JsonObject jsonGetRow(Row row) {
 		JsonObject jrow = new JsonObject();
 		for (Field field : fields) {
-			if (isFieldExpanded(field))
+			if (field.isFieldExpanded())
 				continue;
 			field.addToJson(row, jrow);
 		}
@@ -382,11 +396,15 @@ public class ModelBase implements Iterable {
 		}
 		
 		for (Field f : fields) {
-			if (!isFieldExpanded(f)) {
+			if (!f.isFieldExpanded()) {
 				f.getFromJson(row, jrow);
 			} else {
 				Expand e = f.getExpand();
-				row.set(f.getFieldName(), row.getExpandedRow(e).get(f.getFieldName()));
+				for (KeyPair kp : e.keys) {
+					Row erow = row.getExpandedRow(e);
+					if (erow !=  null)
+						kp.foreignKey.set(row, kp.referencedKey.get(erow));
+				}
 			}
 		}
 		
@@ -439,8 +457,8 @@ public class ModelBase implements Iterable {
 		for (Expand e : currExpands) {
 			s.append("LEFT JOIN `" + e.model.getTableName() + "` AS t" + ti + " ON ");
 			boolean ffirst = true;
-			for (Field f : e.foreignKeys) {
-				s.append((ffirst?"":" AND ")+" t" + ti + ".`" + f.getFieldName() + "` = t0.`" + f.getFieldName() + "`");
+			for (KeyPair kp : e.keys) {
+				s.append((ffirst?"":" AND ")+" t" + ti + ".`" + kp.referencedKey.getFieldName() + "` = t0.`" + kp.foreignKey.getFieldName() + "`");
 				ffirst = false;
 			}
 			s.append("\r\n");

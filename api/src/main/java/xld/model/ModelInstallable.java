@@ -125,19 +125,25 @@ public class ModelInstallable extends ModelBase {
 						SqlRunner sql = new SqlRunner(node);
 						for (int i = inLast+1; i<=inAct; i++) {
 							InstallScript script = installScripts.get(i);
+
+							StringBuilder fullScript = new StringBuilder();
+							
 							node.info("INSTALLING VERSION : " + script.modelVersion);
-							sql.prepared(script.statement);
+
 							
-							
+							for (String statement : script.statements) {
+								sql.prepared(statement);
+								fullScript.append(statement + "\r\n\r\n");
+							}
 							
 							String query = "INSERT INTO xld_sql_install (modelId, modelVersion, versionHint, sqlScript) VALUES (?,?,?,?)";
-							
 							sql.prepared(query, new Object[] {
 								node.getModuleId() + "." + getModelId(),
 								script.modelVersion,
 								script.versionHint,
-								script.statement
+								fullScript.toString()
 							});
+							
 						}
 						
 						sql.run(new ApiHandler(this) {
@@ -154,12 +160,12 @@ public class ModelInstallable extends ModelBase {
 	private static class InstallScript {
 		public String modelVersion;
 		public String versionHint;
-		public String statement;
+		public List<String> statements;
 		
-		public InstallScript(String modelVersion, String versionHint, String statement) {
+		public InstallScript(String modelVersion, String versionHint, List<String> statements) {
 			this.modelVersion = modelVersion;
 			this.versionHint  = versionHint;
-			this.statement    = statement;
+			this.statements    = statements;
 		
 		
 		}
@@ -189,20 +195,14 @@ public class ModelInstallable extends ModelBase {
 				
 				String modelVersion = null;
 				String versionHint = null;
+				List<String> statements = new ArrayList<String>();
 				String statement = "";
 				
 				String lines[] = fileBody.split("\\r?\\n");
 				for (int i = 0; i < lines.length; i++) {
 					String line = lines[i].trim();
 					if (line.startsWith("--@xld-")) {
-					
-						if (!("".equals(statement))) {
-							installScripts.add(new InstallScript(modelVersion, versionHint, statement));
-							modelVersion = null;
-							versionHint = null;
-							statement = "";
-						}
-					
+
 						String keyval = line.substring(7);
 						int p = keyval.indexOf(":");
 						String key;
@@ -214,6 +214,25 @@ public class ModelInstallable extends ModelBase {
 							key = keyval.trim();
 							val = "true";
 						}
+						
+						if ("go".equals(key)) {
+							statements.add(statement);
+							statement = "";
+							continue;
+						}
+					
+						if (!("".equals(statement)) || statements.size()>0) {
+							if (!("".equals(statement))) {
+								statements.add(statement);
+								statement = "";
+							}
+							installScripts.add(new InstallScript(modelVersion, versionHint, statements));
+							modelVersion = null;
+							versionHint = null;
+							statement = "";
+							statements = new ArrayList<String>();
+						}
+					
 						if ("modelVersion".equals(key)) {
 							modelVersion = val;
 						} else if ("versionHint".equals(key)) {
@@ -225,15 +244,20 @@ public class ModelInstallable extends ModelBase {
 						statement += line + "\r\n";
 					}
 				}
-				if (!("".equals(statement))) {
-					installScripts.add(new InstallScript(modelVersion, versionHint, statement));
+				if (!("".equals(statement)) || statements.size()>0) {
+					if (!("".equals(statement))) 
+						statements.add(statement);
+					installScripts.add(new InstallScript(modelVersion, versionHint, statements));
 				}
 
 				for (InstallScript s : installScripts) {
 					node.info("MODELLVERSION : " + s.modelVersion);
 					node.info("VERSIONHINT : " + s.versionHint);
-					node.info("STATEMENT : ");
-					node.info(s.statement);
+					node.info("STATEMENTS ("+ s.statements.size() +") : ");
+					for (String st : s.statements) {
+						node.info("ST:");
+						node.info(st);
+					}
 				}
 				
 				apiHandler.handle();

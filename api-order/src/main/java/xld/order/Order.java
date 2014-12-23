@@ -20,7 +20,9 @@ public class Order extends Model {
 		fieldAddId("orderId");
 		fieldAddStringProp("orderName", 100);
 		fieldAddStringProp("orderDescription", 65536);
-		fieldAddReference("actorId", Actor.class);
+		
+		fieldAddReference("deliveryActorId", Actor.class, "deliveryActor");
+		fieldAddReference("invoiceActorId", Actor.class,  "invoiceActor");
 		
 
 	}
