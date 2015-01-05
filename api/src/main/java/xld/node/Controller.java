@@ -3,6 +3,7 @@ package xld.node;
 import xld.model.Model;
 import java.lang.reflect.Field;
 import org.vertx.java.core.json.JsonObject;
+import java.lang.reflect.InvocationTargetException;
 
 public  class Controller {
 
@@ -19,9 +20,12 @@ public  class Controller {
 		Model model = null;
 		try {
 			model = modelClass.getConstructor(Node.class).newInstance(node);
+		} catch (InvocationTargetException ex) {
+			node.error("==== createModel error ====");
+			node.error(ex.getCause());
 		} catch (Exception ex) {
 			node.error("==== createModel error ====");
-			node.error(ex.getMessage());
+			node.error(ex.toString());
 		}
 		return model;
 	}

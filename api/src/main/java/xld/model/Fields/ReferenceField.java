@@ -1,18 +1,18 @@
-package xld.model;
+package xld.model.fields;
 
-import org.vertx.java.core.json.JsonObject;
-import org.vertx.java.core.json.JsonArray;
+import xld.model.ModelBase;
+
 
 /*
 	Special field for holding reference to external table, use snowflake keys
 	Behave like id in json : convert values to string, not to loss precision
 
 */
-public class ReferenceField extends IdField {
+public class ReferenceField extends LongField {
 	
-	 Class<? extends Model> referenceModel;
+	Class<? extends ModelBase> referenceModel;
 	
-	public ReferenceField(ModelBase model, String fieldName,  Class<? extends Model> referenceModel) {
+	public ReferenceField(ModelBase model, String fieldName,  Class<? extends ModelBase> referenceModel) {
 		super(model, fieldName);
 		this.referenceModel = referenceModel;
 	}
@@ -23,15 +23,12 @@ public class ReferenceField extends IdField {
 	}
 	
 	
-	public boolean isPrimaryKey() {
-		return false;
-	}
-	
-	
 	@Override
 	public String toString() {
 		return super.toString() + "-reference-to-" + referenceModel.getName();
 	}
 
+	
+	
 
 }

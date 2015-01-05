@@ -187,8 +187,9 @@ container.deployModule("io.vertx~mod-mysql-postgresql~0.3.0-SNAPSHOT", 	sqlConfi
 		container.deployModule("xld~api-actor~1.0", 				config, function(err, deployID) {if (err) {console.log("Deployment failed! " + err.getMessage());}});
 		container.deployModule("xld~api-article~1.0",		 		config, function(err, deployID) {if (err) {console.log("Deployment failed! " + err.getMessage());}});
 		container.deployModule("xld~api-order~1.0",			 		config, function(err, deployID) {if (err) {console.log("Deployment failed! " + err.getMessage());}});
+		
+		// only for opening page
 		container.deployModule("xld~api-partner~1.0",		 		config, function(err, deployID) {if (err) {console.log("Deployment failed! " + err.getMessage());}});
-		//container.deployModule("xldata~api-flowpartner~1.0", 		config, function(err, deployID) {if (err) {console.log("Deployment failed! " + err.getMessage());}});
 	}
 
 	

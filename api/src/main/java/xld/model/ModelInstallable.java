@@ -2,6 +2,7 @@ package xld.model;
 
 import xld.node.Node;
 import xld.node.ApiHandler;
+import xld.model.fields.Field;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -21,6 +22,10 @@ public class ModelInstallable extends ModelBase {
 
 	public ModelInstallable(Node node) {
 		super(node);
+	}
+	
+	public ModelInstallable(Node node, ModelBase parent) {
+		super(node, parent);
 	}
 	
 	public void install() {

@@ -47,6 +47,7 @@ xld.Page = function(mainScope, ix, urlInfo) {
 	this.mainScope 	= mainScope;
 	this.scope		= false;
 	this.ix 		= ix;
+	this.preLoading = true;
 
 	this.urlInfo	= urlInfo;
 	this.title 		= urlInfo.url;
@@ -57,7 +58,7 @@ xld.Page = function(mainScope, ix, urlInfo) {
 	this.colsOpt 	= 1;
 	this.colsMin	= 1;
 	this.colsMax	= 1;
-	this.widthSet	= false;
+	
 	
 	this.structs	= [];
 	
@@ -82,6 +83,10 @@ xld.Page = function(mainScope, ix, urlInfo) {
 		scope.s = this.structs;
 		return this;
 	}
+	
+	this.getDisplay = function() {
+		return this.preLoading  ? "none" : "block";
+	}	
 	
 	this.getStruct = function(alias, url) {
 		// create a new structure, saves in structures array and returns the promise object
@@ -206,6 +211,8 @@ xldApp.controller('xldMain', ['$scope', '$location', '$timeout', '$templateCache
 	$scope.$on('$locationChangeSuccess', function(){
 		console.log('$locationChangeSuccess');
 		console.log($location.path());
+		
+		/* Extract page urls from browser url and _bs parameter */
 		$scope.mainUrl = $location.path();
 		var search = $location.search();
 		var bs = {pgs : []};
@@ -264,7 +271,8 @@ xldApp.controller('xldMain', ['$scope', '$location', '$timeout', '$templateCache
 		$scope.askPendingUrls();
 		
 		$timeout(function() {
-			$scope.setScroll(last_ok_bs<0);
+			$scope.lastNoAnimate = last_ok_bs<0;
+			$scope.setScroll();
 		},1);
 	});
 	
@@ -374,7 +382,9 @@ xldApp.controller('xldMain', ['$scope', '$location', '$timeout', '$templateCache
 		return $scope.dims.mainWidthPx + 'px';
 	}
 	
-	$scope.setScroll = function(noAnimate) {
+	$scope.setScroll = function() {
+		var noAnimate = $scope.lastNoAnimate;
+		
 		if ($scope.pages.length<=0) {
 			$('#xld-main-scroll').css({'left' : '0px'  });
 			return;
@@ -391,23 +401,37 @@ xldApp.controller('xldMain', ['$scope', '$location', '$timeout', '$templateCache
 		var colsLeft = $scope.dims.mainColCount;
 		for (var i in ps) {
 			var p = ps[i];
+			
+			if (p.colsOpt <= 0) {
+				p.colsAkt = 0;
+				continue;
+			} 
+
 			if (colsLeft >= p.colsOpt)
 				p.colsAkt = p.colsOpt;
 			else  
 				p.colsAkt = colsLeft;
-			if (p.colsAkt <= 0)
-				p.colsAkt = 1;
+			/*if (p.colsAkt <= 0)
+				p.colsAkt = 1;*/
 			colsLeft -= p.colsAkt;
 		}
-		/*if (colsLeft > 0) {
-			ps[0].colsAkt += colsLeft;
-		}*/
+		if (colsLeft > 0) {
+			if (colsLeft > ps[0].colsMax - ps[0].colsAkt) {
+				colsLeft = colsLeft - ps[0].colsMax + ps[0].colsAkt;
+				ps[0].colsAkt = ps[0].colsMax;
+			} else {
+				ps[0].colsAkt += colsLeft;
+				colsLeft = 0;
+			}
+		}
 	
 		for (var i in ps) {
 			var xw = (ps[i].colsAkt * $scope.dims.colWidthPx) + 'px';
 			var $page = $('#xld-page-' + ps[i].ix);
 			$page.stop(true);
-			$page[noAnimate?'css':'animate']({'width' : xw});
+			$page[noAnimate||ps[i].preLoading?'css':'animate']({'width' : xw});
+			if (ps[i].colsOpt>0)
+				ps[i].preLoading = false;
 		}
 	
 		
@@ -601,6 +625,8 @@ xldApp.controller('xldMain', ['$scope', '$location', '$timeout', '$templateCache
 			for (var w in arrInput) {
 				if (!arrInput.hasOwnProperty(w))
 					continue;
+				/*if (arrInput[w].preLoading)
+					continue;*/
 				s.push(arrInput[w]);
 			}
 
@@ -648,6 +674,49 @@ xldApp.controller('xldMain', ['$scope', '$location', '$timeout', '$templateCache
 					var text = '';
 					if (ngModel.$viewValue)
 						text = ngModel.$viewValue.actorName;
+					$scope.searchterm = text;
+					elem.find('input').val(text);
+				};
+
+			
+			}
+		}
+	});
+
+
+	xldApp.directive('xldReferenceArticleArticle', function () {
+		return {
+			restrict: 'E',
+			require: 'ngModel',
+			template: "<input type='text' ng-model='searchterm' />",
+			scope: {	
+				ngModel: '=',
+				openerKey : '@'
+			},
+			link: function($scope, elem, attrs, ngModel) {
+				$scope.searchterm = '';
+				
+				changed = function(e) {
+					$scope.$apply(function() {
+						$scope.$parent.page.goForwardSub(e, "/articles", $scope.openerKey);
+					});
+				}
+				
+				elem.bind('keyup', changed);
+				
+				
+				$scope.$on('subpageResult', function(e, sr) {
+					if (sr.key != $scope.openerKey)
+						return;
+					ngModel.$setViewValue(sr.value);
+					ngModel.$render();
+				});
+				
+				ngModel.$render = function() {
+					var text = '';
+					if (ngModel.$viewValue)
+						text = ngModel.$viewValue.articleName;
+					$scope.searchterm = text;
 					elem.find('input').val(text);
 				};
 

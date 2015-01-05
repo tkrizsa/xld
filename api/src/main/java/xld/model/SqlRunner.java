@@ -8,6 +8,10 @@ import xld.node.ApiHandler;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
+
+import xld.model.fields.Field;
 
 
 public class SqlRunner {
@@ -15,6 +19,7 @@ public class SqlRunner {
 	protected Node node;
 	private List<JsonObject> queue = new ArrayList<JsonObject>();
 	private int nextRun = 0;
+	private Map<String, JsonObject> results = new HashMap<String, JsonObject>();
 	private JsonObject lastResult;
 	
 	public SqlRunner(Node node) {
@@ -33,15 +38,6 @@ public class SqlRunner {
 		for (Field field : model.getFields()) {
 			jfields.addString(field.getFieldName());
 			field.addToJson(row, jvalues);
-			/*if (!model.isFieldExpanded(field)) {
-				field.addToJson(row, jvalues);
-			} else {
-				Model.Expand e = field.getExpand();
-				field.addToJson(e.
-				for (Model.Expand e : model.currExpands) {
-				
-				}
-			}*/
 		}
 		q.putArray("fields", jfields);
 		jrows.addArray(jvalues);
@@ -87,13 +83,23 @@ public class SqlRunner {
 	
 	
 	public void prepared(String statement) {
-		prepared(statement, new Object[0]);
+		prepared(statement, new Object[0], null);
 	}
 	
+	public void prepared(String statement, String resultKey) {
+		prepared(statement, new Object[0], resultKey);
+	}
+
 	public void prepared(String statement, Object[] values) {
+		prepared(statement, values, null);
+	}
+	
+	public void prepared(String statement, Object[] values, String resultKey) {
 		JsonObject q = new JsonObject();
 		q.putString("action", "prepared");
 		q.putString("statement", statement);
+		if (resultKey != null)
+			q.putString("resultKey", resultKey);
 		
 		JsonArray jvalues = new JsonArray();
 		for (int i = 0; i < values.length; i++) {
@@ -111,7 +117,15 @@ public class SqlRunner {
 		} else {
 			JsonObject q = queue.get(nextRun);
 			nextRun++;
-			node.info(q);
+			node.info("-------------------- SQL -----------------------");
+			node.info(q.getString("statement"));
+			node.info("-------------------- /SQL -----------------------");
+			JsonArray values = q.getArray("values");
+			if (q != null) {
+				for (int i = 0; i < values.size(); i++)
+					node.info(values.get(i));
+			}
+			final String resultKey = q.getString("resultKey");
 			node.eb().send("xld-sql-persist", q, new ApiHandler(apiHandler) {
 				public void handle() {
 					if (sqlError()) {
@@ -119,6 +133,9 @@ public class SqlRunner {
 						replyError(sqlMessage());
 						return;
 					} 
+					if (resultKey != null) {
+						thisRunner.results.put(resultKey, this.getMessage().body());
+					}
 					thisRunner.lastResult = this.getMessage().body();
 					thisRunner.run(apiHandler);
 				}
@@ -131,6 +148,10 @@ public class SqlRunner {
 	
 	public JsonObject getLastResult() {
 		return lastResult;
+	}
+
+	public JsonObject getResult(String resultKey) {
+		return results.get(resultKey);
 	}
 
 

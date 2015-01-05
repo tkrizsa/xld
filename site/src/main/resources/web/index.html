@@ -49,7 +49,7 @@
 			
 			<div id='xld-main' ng-style="xldMainStyle()" >
 				<div id='xld-main-scroll'  >
-					<div ng-repeat="page in pages | pageSort" class='xld-page-col' id='xld-page-{{page.ix}}' style='max-width:{{getMaxWidth()}};' >
+					<div ng-repeat="page in pages | pageSort" class='xld-page-col' id='xld-page-{{page.ix}}' style='max-width:{{getMaxWidth()}};' ng-visible='page.getDisplay()' >
 						<div style='display:none; position:absolute; right:0; top:0; font-size:18px; z-index:10000;'><a href='javascript:void(0)' ng-click='page.close()'>x</a></div>
 						<div class='xld-page-scroll' xld-scroll>
 							<ng-include src="page.template" onload="page.templateLoaded()" class='xld-page-content' ></ng-include>

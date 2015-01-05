@@ -9,6 +9,7 @@ body {
 
 #xld-main, #xld-main-scroll {
 background-color:#353535;
+background-color: #D3D3D2;
 }
 
 
@@ -42,6 +43,14 @@ font-size: 1.4rem;
 
 
 
+.xld-page-content h2 {
+font-family: 'Open Sans', sans-serif;
+font-size: 1.7rem;
+color: #ABABAB;
+text-shadow: #FFF 0 1px 0;
+font-weight: 300;
+}
+
 .xld-page-content label {
 font-family: 'Open Sans', sans-serif;
 font-size: 0.7rem;
@@ -66,49 +75,49 @@ margin-bottom : 3px;
 .xld-page-head {
 width: 100%;
 background-color: #7C7C7C;
-background-color: #E4E4E4;
+background-color: #FFFFFF;
 height: 2.5rem;
 padding: 0.5rem 1rem;
-
+border-bottom: 3px solid #ccc;
 }
+
+	.xld-page-head.red {
+	border-bottom: 3px solid #C35E5E;
+	}
+
+	.xld-page-head.purple {
+	border-bottom: 3px solid #7056A5;
+	}
+
 
 .xld-page-head .button {
 
-background: #f1e767; /* Old browsers */
-background: -moz-linear-gradient(top,  #f1e767 0%, #feb645 100%); /* FF3.6+ */
-background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f1e767), color-stop(100%,#feb645)); /* Chrome,Safari4+ */
-background: -webkit-linear-gradient(top,  #f1e767 0%,#feb645 100%); /* Chrome10+,Safari5.1+ */
-background: -o-linear-gradient(top,  #f1e767 0%,#feb645 100%); /* Opera 11.10+ */
-background: -ms-linear-gradient(top,  #f1e767 0%,#feb645 100%); /* IE10+ */
-background: linear-gradient(to bottom,  #f1e767 0%,#feb645 100%); /* W3C */
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f1e767', endColorstr='#feb645',GradientType=0 ); /* IE6-9 */
-
 padding: 0 1rem;
-color: #756532;
+color: #1F1F1F;
 font-weight: 700;
-border: 1px solid #706536;
 line-height: 1.5rem;
 float : left;
-text-shadow: 1px 1px #E6E1CD;
+text-shadow: 1px 1px #eeeeee;
+border: 1px solid transparent;
+background-color: transparent;
 }
 
-.xld-page-head .button.back {
+	.xld-page-head .button:hover {
+		border : 1px solid #666;
+	}
+
+
+/*.xld-page-head .button.back {
 border-top-left-radius: 11px;
 border-bottom-left-radius: 11px;
-}
+}*/
 
-.xld-page-head .button.save {
-background: #ff8377; /* Old browsers */
-background: -moz-linear-gradient(top,  #ff8377 0%, #c43f31 100%); /* FF3.6+ */
-background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ff8377), color-stop(100%,#c43f31)); /* Chrome,Safari4+ */
-background: -webkit-linear-gradient(top,  #ff8377 0%,#c43f31 100%); /* Chrome10+,Safari5.1+ */
-background: -o-linear-gradient(top,  #ff8377 0%,#c43f31 100%); /* Opera 11.10+ */
-background: -ms-linear-gradient(top,  #ff8377 0%,#c43f31 100%); /* IE10+ */
-background: linear-gradient(to bottom,  #ff8377 0%,#c43f31 100%); /* W3C */
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ff8377', endColorstr='#c43f31',GradientType=0 ); /* IE6-9 */
-border: 1px solid #825D5A;
-color: #722323;
-}
+/*.xld-page-head .button.save {
+color: #FFFFFF;
+background-color: #474747;
+font-weight: normal;
+text-shadow: none;
+}*/
 
 .xld-page-head .button.right {
 float:right;
@@ -127,57 +136,8 @@ color: #3D3D3D;
 text-shadow: 1px 1px #FFF;
 }
 
-/* ================================================== Scrollbar ========================================== */
 
-.xld-scroll-track {
-    width: 10px;
-    background-clip: padding-box;
-    background: transparent;
-    border-style: solid;
-    border-color: transparent;
-    border-width: 0;
-    border-left-width: 1px;
-}
-
-.xld-scroll-track.dragging,
-.xld-scroll-track:hover {
-    background: #f2f2f2; /* No RGBA support */
-    background: rgba(0, 0, 0, 0.05);
-    -webkit-box-shadow: inset 1px 0 0 rgba(0, 0, 0, 0.1);
-    box-shadow: inset 1px 0 0 rgba(0, 0, 0, 0.1);
-}
-
-.xld-scroll-track:active {
-    background: #f2f2f2; /* No RGBA support */
-    background: rgba(0, 0, 0, 0.05);
-    -webkit-box-shadow: inset 1px 0 0 rgba(0, 0, 0, 0.14),
-                        inset -1px -1px 0 rgba(0, 0, 0, 0.07);
-    box-shadow: inset 1px 0 0 rgba(0, 0, 0, 0.14),
-                inset -1px -1px 0 rgba(0, 0, 0, 0.07);
-}
-
-.xld-scroll-handle {
-    width: 10px;
-    background-clip: padding-box;
-    background: #ccc; /* No RGBA support */
-    background: rgba(0, 0, 0, 0.2);
-    -webkit-box-shadow: inset 1px 1px 0 rgba(0, 0, 0, 0.1),
-                        inset 0 -1px 0 rgba(0, 0, 0, 0.07);
-    box-shadow: inset 1px 1px 0 rgba(0, 0, 0, 0.1),
-                inset 0 -1px 0 rgba(0, 0, 0, 0.07);
-}
-
-.xld-scroll-handle:hover {
-    background: #999; /* No RGBA support */
-    background: rgba(0, 0, 0, 0.4);
-    -webkit-box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.25);
-    box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.25);
-}
-
-.dragging .xld-scroll-handle,
-.xld-scroll-handle:active {
-    background: gray; /* No RGBA support */
-    background: rgba(0, 0, 0, 0.5);
-    -webkit-box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.35);
-    box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.35);
+.xld-page-content .button.page-bottom {
+width:100%;
+padding: 4px;
 }

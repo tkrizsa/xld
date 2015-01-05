@@ -8,4 +8,8 @@ public class Model extends ModelInstallable {
 		super(node);
 	}
 
+	public Model(Node node, ModelBase parent) {
+		super(node, parent);
+	}
+
 }

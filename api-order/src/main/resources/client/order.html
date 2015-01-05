@@ -1,25 +1,46 @@
-<div xld-page="2,2,2"  ng-controller='xldCtrlOrder' >
-<div class='xld-page-head'>
+<div xld-page="2,2,2"  ng-controller='xldCtrlOrder' class='xld-page' >
+<div class='xld-page-head red'>
 	<div class='xld-col-2'>
-		<button ng-click='page.close()' class='button back'>Cancel</button>
+		<button ng-click='page.close()' class='button back'>&lt; Back</button>
 		<button ng-click='save()' class='button save right'>Save</button>
 	</div>
 </div>
 <div class='xld-page-pad xld-col-2' >
-	<label>Delivery To:</label><br/>
-	<xld-reference-actor-actor ng-model="s.order._rows[0].deliveryActor" opener-key="delivery-actor"  ></xld-reference-actor-actor><br/>
-	<span style="font-size:8px; color:#aaa;">{{s.order._rows[0].deliveryActor.actorId}} &nbsp;&nbsp;	{{s.order._rows[0].deliveryActor.actorName}}</span><br/>
+	<div class='xld-col-2'>
 	
-	<label>Invoice To:</label><br/>
-	<xld-reference-actor-actor ng-model="s.order._rows[0].invoiceActor" opener-key="invoice-actor" ></xld-reference-actor-actor><br/>
-	<span style="font-size:8px; color:#aaa;">{{s.order._rows[0].invoiceActor.actorId}} &nbsp;&nbsp;	{{s.order._rows[0].invoiceActor.actorName}}</span><br/>
+		<label>Delivery To:</label><br/>
+		<xld-reference-actor-actor ng-model="s.order._rows[0].deliveryActor" opener-key="delivery-actor"  ></xld-reference-actor-actor><br/>
+		<!-- <span style="font-size:8px; color:#aaa;">{{s.order._rows[0].deliveryActor.actorId}} &nbsp;&nbsp;	{{s.order._rows[0].deliveryActor.actorName}}</span><br/> -->
+		
+		<label>Invoice To:</label><br/>
+		<xld-reference-actor-actor ng-model="s.order._rows[0].invoiceActor" opener-key="invoice-actor" ></xld-reference-actor-actor><br/>
+		
+
+	</div>
+	<div class='xld-col-2'>
+		
+		
+		<label>Name:</label><br/>
+		<input ng-model="s.order._rows[0].orderName" /><br/>
+		<label>Description:</label><br/>
+		<textarea ng-model="s.order._rows[0].orderDescription"></textarea>
+		
+		<br/>
+
+	</div>
+	<div class='xld-col-2'>
+		
+		<h2>Details:</h2>
+		<div ng-repeat="(ix, detail) in s.order._rows[0].details.rows" class="xld-table-row">
+			<xld-reference-article-article ng-model="detail.article" opener-key="article-{{ix}}"  ></xld-reference-article-article><br/>
+			<input ng-model="detail.amount" /><br/>
+		
+		</div>
+		<br />
+		<button ng-click="addDetail()" class="button page-bottom" >New row</button>
+	</div>
+
 	
-	
-	
-	<label>Name:</label><br/>
-	<input ng-model="s.order._rows[0].orderName" /><br/>
-	<label>Description:</label><br/>
-	<textarea ng-model="s.order._rows[0].orderDescription"></textarea>
 	
 </div>
 

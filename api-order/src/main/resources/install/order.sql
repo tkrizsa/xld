@@ -31,4 +31,9 @@ ALTER TABLE `order.order`
 	ADD CONSTRAINT `fk_order_invoiceActorId`  FOREIGN KEY (`invoiceActorId`) REFERENCES `actor.actor`(`actorId`)
 	
 	
-	
+--@xld-modelVersion	: 42f290a8eb214e04651b06b8082d2576
+--@xld-versionHint 	: version string creating changed
+
+SELECT 'nothing to do'
+
+

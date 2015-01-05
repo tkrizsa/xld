@@ -12,5 +12,7 @@ CREATE TABLE `article.article` (
 
 ALTER TABLE `article.article` ADD  `articleDescription` TEXT NULL
 
+--@xld-modelVersion	: f280d5767b829ddbf83ac48bd6890c66
+--@xld-versionHint 	: version string creating changed
 
-
+SELECT 'nothing to do'
