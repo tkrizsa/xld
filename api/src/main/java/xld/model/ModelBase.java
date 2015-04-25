@@ -167,6 +167,12 @@ public class ModelBase implements Iterable {
 		return f;
 	}
 	
+	public MoneyField fieldAddMoney(String fieldName) {
+		MoneyField f = new MoneyField(this, fieldName);
+		fieldAdd(f);
+		return f;
+	}
+
 	public ReferenceField fieldAddReference(String fieldName, Class<? extends Model> referenceModel) {
 		return fieldAddReference(fieldName, referenceModel, getModelId(referenceModel));
 	}

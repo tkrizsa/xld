@@ -184,10 +184,11 @@ public class ModelInstallable extends ModelBase {
 		the file contains more scrips, one for each version step
 	*/
 	private void loadInstallScripts(final ApiHandler apiHandler) {
-		node.fileSystem().readFile("./install/" + getModelId() + ".sql", new AsyncResultHandler<Buffer>() {
+		final String fileName = "./install/" + getModelId() + ".sql";
+		node.fileSystem().readFile(fileName, new AsyncResultHandler<Buffer>() {
 			public void handle(AsyncResult<Buffer> ar) {
 				if (!ar.succeeded()) {
-					node.error("File not found.");
+					node.error("file not found: '"  + fileName + "'");
 					//apiHandler.handle();
 					return;
 				}

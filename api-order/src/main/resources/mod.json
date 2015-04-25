@@ -1,6 +1,6 @@
 {
 	"main" : "ModOrder",
-	"auto-redeploy" : true,
+	"auto-redeploy" : false,
 	"includes" : "xld~api~1.0,xld~api-actor~1.0,xld~api-article~1.0"
  
  

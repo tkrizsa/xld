@@ -17,8 +17,6 @@ div#xld-outer {
     height:100%; 
     width:100%; 
 	overflow : hidden;
-    background-color:#333;
-	
 }
 
 #xld-main {
@@ -145,6 +143,7 @@ width:100%;
 
 .xld-list tr.selected {
 	background-color: #C1DDD2;
+	background-color: #F7E491;
 }
 
 /*
@@ -236,7 +235,7 @@ margin-bottom: 8px;
 						#xld-nav-main > ul > li:hover > a,
 						#xld-nav-main > ul:not( :hover ) > li.active > a
 						{
-							background-color: #6FA928;
+							background-color: #103B51;
 						}
 
 
@@ -244,7 +243,7 @@ margin-bottom: 8px;
 
 				#xld-nav-main li ul
 				{
-					background-color: #FEBD47;
+					background-color:  rgba(0, 0, 0, 0.71);
 					display: none;
 					position: absolute;
 					top: 2em;
@@ -269,13 +268,13 @@ margin-bottom: 8px;
 						}
 						#xld-nav-main li ul a
 						{
-							border-top: 1px solid #E1B31C;
+							border-top: 1px solid #16384A;
 							padding: 0.4em 0.75em; /* 15 (20) */
-							color : #4A3F1E;
+							color : #fff;
 						}
 							#xld-nav-main li ul li a:hover,
 							#xld-nav-main li ul:not( :hover ) li.active a
 							{
-							background-color: #D09342;
+							background-color: #94B0C0;
 							color: #080808;
 							}

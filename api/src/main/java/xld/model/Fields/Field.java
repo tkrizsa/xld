@@ -44,7 +44,7 @@ public abstract class Field {
 	}
 
 	// --------------- handle value parsing & conversion -----------------
-	public abstract Object parse(Object val);
+	public abstract Object parse(Object val) ;
 	
 	/* Add value to json object */
 	public void addToJson(ModelBase.Row row, JsonObject jrow) {
@@ -59,7 +59,7 @@ public abstract class Field {
 	}
 
 	/* Read value from json object */
-	public void getFromJson(ModelBase.Row row, JsonObject jrow) {
+	public void getFromJson(ModelBase.Row row, JsonObject jrow)  {
 		Object val = jrow.getValue(fieldName);
 		val = parse(val);
 		row.set(fieldName, val);

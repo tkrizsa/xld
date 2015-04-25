@@ -1,36 +1,92 @@
 <!DOCTYPE html>
-<html lang="en" class="no-js">
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Base</title>
+<!--[if lt IE 7]>      <html ng-app='xldApp' class="no-js lt-ie9 lt-ie8 lt-ie7" xmlns:ng="http://angularjs.org"> <![endif]-->
+<!--[if IE 7]>         <html ng-app='xldApp' class="no-js lt-ie9 lt-ie8" xmlns:ng="http://angularjs.org"> <![endif]-->
+<!--[if IE 8]>         <html ng-app='xldApp'  class="no-js lt-ie9" xmlns:ng="http://angularjs.org"> <![endif]-->
+<!--[if gt IE 8]><!--> <html ng-app='xldApp'  ng-csp class="no-js" xmlns:ng="http://angularjs.org"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>XLData</title>
+		<base href='/' />
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <meta name="description" content="">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 
-  <link rel="shortcut icon" href="/images/favicon.png">
-  <link rel="apple-touch-icon" sizes="57x57" href="/images/apple-touch-icon.png">
-  <link rel="apple-touch-icon" sizes="72x72" href="/images/apple-touch-icon-72x72.png">
-  <link rel="apple-touch-icon" sizes="114x114" href="/images/apple-touch-icon-114x114.png">
+        <link rel="stylesheet" href="css/normalize.css">
+        <link rel="stylesheet" href="css/jquery.mmenu.all.css">
+        <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" href="css/layout.css">
+        <link rel="stylesheet" href="css/theme_base.css">
+		<link rel="stylesheet" href="css/jbox.css">		
+        <script src="js/vendor/modernizr-2.6.2.min.js"></script>
+		<script>
+			window.name = "NG_DEFER_BOOTSTRAP!";
+		</script>
+    </head>
+    <body  ng-controller="xldMain">
+        <!--[if lt IE 7]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
 
-  <link rel="stylesheet" href="style.css">
-  <script src="js/modernizr.js"></script>
-</head>
-<body>
+		
+		<div id='xld-outer' xld-window-resize >
+			<!-- ============================= NAVIGATION =================================== -->
+			<nav id="xld-nav-main" role="navigation">
+				<ul>
+					<li><a href="/home">Home</a></li>
+					<li>
+						<a href="/orders" aria-haspopup="true">Orders</a>
+						<ul>
+							<li><a href="/orders">Orders</a></li>
+							<li><a href="/actors">Partners</a></li>
+							<li><a href="/articles">Articles</a></li>
+							<li>---</li>
+							<li><a href="/expenses">Expenses</a></li>
+							<li><a href="/expensekinds">Expense kinds</a></li>
+						</ul>
+					</li>
+					<li><a href="/about">About</a></li>
+				</ul>
+			</nav>
+			
+			<div id='xld-main' ng-style="xldMainStyle()" >
+				<div id='xld-main-scroll'  >
+					<div ng-repeat="page in pages | pageSort" class='xld-page-col' id='xld-page-{{page.ix}}' style='max-width:{{getMaxWidth()}};' ng-visible='page.getDisplay()' >
+						<div style='display:none; position:absolute; right:0; top:0; font-size:18px; z-index:10000;'><a href='javascript:void(0)' ng-click='page.close()'>x</a></div>
+						<div class='xld-page-scroll' xld-scroll>
+							<ng-include src="page.template" onload="page.templateLoaded()" class='xld-page-content' ></ng-include>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 
+		
 
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<script src="js/default.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.10.2.min.js"><\/script>')</script>
+        <script src="js/vendor/jquery.base64.js"></script>
+        <script src="js/vendor/jquery.mmenu.min.all.js"></script>
+   		<script src="js/vendor/jbox.js"></script>
+		<script src="js/vendor/angular.js"></script>
+		<script src="js/vendor/autoNumeric-1.7.4.js"></script>
+		<script src="js/vendor/URI.js"></script>
+        <script src="js/plugins.js"></script>
+        <script src="js/xld.js"></script>
+        <script src="js/main.js"></script>
+        <script src="js/xld.tools.js"></script>
 
-<!-- Google Analytics: change UA-XXXXX-X to your website's ID. -->
-<script>
-  (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
-  function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
-  e=o.createElement(i);r=o.getElementsByTagName(i)[0];
-  e.src='//www.google-analytics.com/analytics.js';
-  r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
-  ga('create','UA-XXXXX-X');ga('send','pageview');
-</script>
-
-</body>
+        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. 
+        <script>
+            (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+            function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+            e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+            e.src='//www.google-analytics.com/analytics.js';
+            r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+            ga('create','UA-XXXXX-X');ga('send','pageview');
+        </script>
+		-->
+    </body>
 </html>
+	
