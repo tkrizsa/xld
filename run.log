@@ -1,0 +1,683 @@
+
+
+
+=============================== XLD Started... =================================
+
+
+XLD site started ......
+XLD API Partner started ...
+HTTP GET /
+file:
+index.html
+HTTP GET /css/normalize.css
+file:
+/css/normalize.css
+HTTP GET /css/jquery.mmenu.all.css
+HTTP GET /css/main.css
+file:
+/css/jquery.mmenu.all.css
+file:
+/css/main.css
+HTTP GET /css/layout.css
+HTTP GET /css/theme_base.css
+file:
+/css/layout.css
+file:
+/css/theme_base.css
+HTTP GET /css/jbox.css
+file:
+/css/jbox.css
+HTTP GET /js/vendor/modernizr-2.6.2.min.js
+file:
+/js/vendor/modernizr-2.6.2.min.js
+HTTP GET /js/vendor/jquery.base64.js
+file:
+/js/vendor/jquery.base64.js
+HTTP GET /js/plugins.js
+file:
+/js/plugins.js
+HTTP GET /js/xld.js
+HTTP GET /js/main.js
+file:
+/js/xld.js
+file:
+/js/main.js
+HTTP GET /js/xld.tools.js
+HTTP GET /js/vendor/jquery.mmenu.min.all.js
+file:
+/js/xld.tools.js
+file:
+/js/vendor/jquery.mmenu.min.all.js
+HTTP GET /js/vendor/angular.js
+HTTP GET /js/vendor/URI.js
+file:
+/js/vendor/angular.js
+file:
+/js/vendor/URI.js
+HTTP GET /js/vendor/jbox.js
+file:
+/js/vendor/jbox.js
+HTTP GET /parseUrls?urls=%5B%22%2Fhome%22%5D
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /parseUrls?urls=%5B%22%2Forders%22%5D
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /api/orders?_expand=deliveryActor
+HTTP GET /api/orders/552490365877248203?_expand=deliveryActor,invoiceActor,details,article
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /api/orders/552403001389702278?_expand=deliveryActor,invoiceActor,details,article
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /parseUrls?urls=%5B%22%2Farticles%22%5D
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /api/articles
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP POST /api/orders/552403001389702278?_expand=deliveryActor,invoiceActor,details,article
+HTTP GET /api/orders?_expand=deliveryActor
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /api/orders/552402703055188208?_expand=deliveryActor,invoiceActor,details,article
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /api/orders/552403001389702278?_expand=deliveryActor,invoiceActor,details,article
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /api/orders/552490365877248203?_expand=deliveryActor,invoiceActor,details,article
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /api/orders/552421634832109742?_expand=deliveryActor,invoiceActor,details,article
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /api/orders/552490365877248203?_expand=deliveryActor,invoiceActor,details,article
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /api/orders/552403001389702278?_expand=deliveryActor,invoiceActor,details,article
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /api/orders/552402703055188208?_expand=deliveryActor,invoiceActor,details,article
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /api/orders/552403001389702278?_expand=deliveryActor,invoiceActor,details,article
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /api/orders/552490365877248203?_expand=deliveryActor,invoiceActor,details,article
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /api/orders/552421634832109742?_expand=deliveryActor,invoiceActor,details,article
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /api/orders/552403001389702278?_expand=deliveryActor,invoiceActor,details,article
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /api/orders/552490365877248203?_expand=deliveryActor,invoiceActor,details,article
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /api/orders/552421634832109742?_expand=deliveryActor,invoiceActor,details,article
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /api/orders/552402703055188208?_expand=deliveryActor,invoiceActor,details,article
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /api/orders/new?_expand=deliveryActor,invoiceActor,details,article
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /parseUrls?urls=%5B%22%2Factors%22%5D
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /api/actors
+HTTP GET /api/actors/552494936418933964
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /api/actors/552402799516407669
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /api/actors/552402323879773219
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /api/actors/552494936418933964
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /api/actors/552421550195341559
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /api/actors/552402323879773219
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /api/actors/552402799516407669
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /favicon.ico
+HTTP GET /api/actors/552402323879773219
+file:
+/favicon.ico
+HTTP GET /api/actors/552421550195341559
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /api/actors/552494936418933964
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /api/actors/552402323879773219
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /api/actors/552402799516407669
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /api/orders?_expand=deliveryActor
+HTTP GET /api/orders/new?_expand=deliveryActor,invoiceActor,details,article
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /api/orders/552402703055188208?_expand=deliveryActor,invoiceActor,details,article
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /api/orders/552421634832109742?_expand=deliveryActor,invoiceActor,details,article
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /api/orders/552490365877248203?_expand=deliveryActor,invoiceActor,details,article
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /api/orders/552403001389702278?_expand=deliveryActor,invoiceActor,details,article
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /api/orders/552421634832109742?_expand=deliveryActor,invoiceActor,details,article
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /api/orders/552490365877248203?_expand=deliveryActor,invoiceActor,details,article
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /api/orders/552403001389702278?_expand=deliveryActor,invoiceActor,details,article
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /api/orders/552402703055188208?_expand=deliveryActor,invoiceActor,details,article
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /api/orders/552403001389702278?_expand=deliveryActor,invoiceActor,details,article
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /api/orders/552490365877248203?_expand=deliveryActor,invoiceActor,details,article
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /api/orders/552421634832109742?_expand=deliveryActor,invoiceActor,details,article
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /api/orders/552490365877248203?_expand=deliveryActor,invoiceActor,details,article
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /api/orders/552403001389702278?_expand=deliveryActor,invoiceActor,details,article
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /api/orders/552402703055188208?_expand=deliveryActor,invoiceActor,details,article
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /api/orders/552402703055188208?_expand=deliveryActor,invoiceActor,details,article
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /api/orders?_expand=deliveryActor
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /api/orders/552402703055188208?_expand=deliveryActor,invoiceActor,details,article
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /api/orders/552403001389702278?_expand=deliveryActor,invoiceActor,details,article
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /api/orders/552490365877248203?_expand=deliveryActor,invoiceActor,details,article
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /css/normalize.css
+file:
+/css/normalize.css
+HTTP GET /css/jquery.mmenu.all.css
+file:
+/css/jquery.mmenu.all.css
+HTTP GET /css/main.css
+file:
+/css/main.css
+HTTP GET /css/layout.css
+file:
+/css/layout.css
+HTTP GET /css/theme_base.css
+file:
+/css/theme_base.css
+HTTP GET /css/jbox.css
+file:
+/css/jbox.css
+HTTP GET /api/orders/552402703055188208?_expand=deliveryActor,invoiceActor,details,article
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /api/orders/552421634832109742?_expand=deliveryActor,invoiceActor,details,article
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /api/orders/552490365877248203?_expand=deliveryActor,invoiceActor,details,article
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /api/articles
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /api/actors
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /api/actors/552402323879773219
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /api/actors/552421550195341559
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /api/actors/552494936418933964
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /api/actors/552402323879773219
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /api/actors/552494936418933964
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /api/actors/552402799516407669
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /api/actors/552494936418933964
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /api/actors/552402323879773219
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /api/actors/552421550195341559
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /api/actors/new
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP POST /api/actors/new
+HTTP GET /api/actors
+HTTP GET /api/actors/552421550195341559
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /api/orders?_expand=deliveryActor
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /api/orders/new?_expand=deliveryActor,invoiceActor,details,article
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /api/orders/552421634832109742?_expand=deliveryActor,invoiceActor,details,article
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /api/actors
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /api/orders/552402703055188208?_expand=deliveryActor,invoiceActor,details,article
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /api/orders/552490365877248203?_expand=deliveryActor,invoiceActor,details,article
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /api/actors
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /api/orders?_expand=deliveryActor
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /api/orders/552402703055188208?_expand=deliveryActor,invoiceActor,details,article
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /api/orders/552490365877248203?_expand=deliveryActor,invoiceActor,details,article
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /api/orders/552421634832109742?_expand=deliveryActor,invoiceActor,details,article
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /api/orders?_expand=deliveryActor
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /api/orders/552490365877248203?_expand=deliveryActor,invoiceActor,details,article
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /api/orders/552403001389702278?_expand=deliveryActor,invoiceActor,details,article
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /api/orders/552490365877248203?_expand=deliveryActor,invoiceActor,details,article
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /orders/552490365877248203?_bs=eyJwZ3MiOlt7InNlZyI6Im1haW4iLCJwb3MiOjAsInVybCI6Ii9vcmRlcnMifSx7InNlZyI6Im1haW4iLCJwb3MiOjEsInVybCI6Ii9vcmRlcnMvNTUyNDkwMzY1ODc3MjQ4MjAzIn1dfQ
+file:
+index.html
+HTTP GET /css/normalize.css
+file:
+/css/normalize.css
+HTTP GET /css/jquery.mmenu.all.css
+file:
+/css/jquery.mmenu.all.css
+HTTP GET /css/main.css
+file:
+/css/main.css
+HTTP GET /css/layout.css
+file:
+/css/layout.css
+HTTP GET /css/theme_base.css
+file:
+/css/theme_base.css
+HTTP GET /js/vendor/jquery.mmenu.min.all.js
+HTTP GET /js/vendor/jquery.base64.js
+HTTP GET /js/vendor/modernizr-2.6.2.min.js
+HTTP GET /css/jbox.css
+file:
+/js/vendor/jquery.mmenu.min.all.js
+file:
+/js/vendor/jquery.base64.js
+file:
+/js/vendor/modernizr-2.6.2.min.js
+file:
+/css/jbox.css
+HTTP GET /js/vendor/jbox.js
+HTTP GET /js/vendor/angular.js
+HTTP GET /js/vendor/URI.js
+HTTP GET /js/plugins.js
+file:
+/js/vendor/jbox.js
+file:
+/js/vendor/angular.js
+file:
+/js/vendor/URI.js
+file:
+/js/plugins.js
+HTTP GET /js/main.js
+HTTP GET /js/xld.tools.js
+HTTP GET /js/xld.js
+file:
+/js/main.js
+file:
+/js/xld.tools.js
+file:
+/js/xld.js
+HTTP GET /parseUrls?urls=%5B%22%2Forders%22%2C%22%2Forders%2F552490365877248203%22%5D
+HTTP GET /api/orders?_expand=deliveryActor
+HTTP GET /api/orders/552490365877248203?_expand=deliveryActor,invoiceActor,details,article
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /orders/552490365877248203?_bs=eyJwZ3MiOlt7InNlZyI6Im1haW4iLCJwb3MiOjAsInVybCI6Ii9vcmRlcnMifSx7InNlZyI6Im1haW4iLCJwb3MiOjEsInVybCI6Ii9vcmRlcnMvNTUyNDkwMzY1ODc3MjQ4MjAzIn1dfQ
+file:
+index.html
+HTTP GET /css/normalize.css
+file:
+/css/normalize.css
+HTTP GET /js/vendor/modernizr-2.6.2.min.js
+HTTP GET /css/jquery.mmenu.all.css
+HTTP GET /css/main.css
+HTTP GET /css/layout.css
+HTTP GET /css/theme_base.css
+file:
+/js/vendor/modernizr-2.6.2.min.js
+file:
+/css/jquery.mmenu.all.css
+file:
+/css/main.css
+file:
+/css/layout.css
+file:
+/css/theme_base.css
+HTTP GET /js/vendor/jquery.base64.js
+HTTP GET /js/vendor/jquery.mmenu.min.all.js
+HTTP GET /js/vendor/jbox.js
+HTTP GET /js/vendor/angular.js
+HTTP GET /css/jbox.css
+file:
+/js/vendor/jquery.base64.js
+file:
+/js/vendor/jquery.mmenu.min.all.js
+file:
+/js/vendor/jbox.js
+file:
+/js/vendor/angular.js
+file:
+/css/jbox.css
+HTTP GET /js/plugins.js
+HTTP GET /js/xld.js
+HTTP GET /js/main.js
+HTTP GET /js/vendor/URI.js
+file:
+/js/plugins.js
+file:
+/js/xld.js
+file:
+/js/main.js
+file:
+/js/vendor/URI.js
+HTTP GET /js/xld.tools.js
+file:
+/js/xld.tools.js
+HTTP GET /parseUrls?urls=%5B%22%2Forders%22%2C%22%2Forders%2F552490365877248203%22%5D
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /api/orders?_expand=deliveryActor
+HTTP GET /api/orders/552490365877248203?_expand=deliveryActor,invoiceActor,details,article
+HTTP GET /api/orders/552421634832109742?_expand=deliveryActor,invoiceActor,details,article
+HTTP GET /api/orders/552403001389702278?_expand=deliveryActor,invoiceActor,details,article
+HTTP GET /api/orders/552402703055188208?_expand=deliveryActor,invoiceActor,details,article
+HTTP GET /api/orders/new?_expand=deliveryActor,invoiceActor,details,article
+HTTP GET /parseUrls?urls=%5B%22%2Fabout%22%5D
+HTTP GET /parseUrls?urls=%5B%22%2Factors%22%5D
+HTTP GET /api/actors
+HTTP GET /api/orders/552403001389702278?_expand=deliveryActor,invoiceActor,details,article
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /api/orders/552402703055188208?_expand=deliveryActor,invoiceActor,details,article
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /api/orders/552403001389702278?_expand=deliveryActor,invoiceActor,details,article
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /api/orders/552490365877248203?_expand=deliveryActor,invoiceActor,details,article
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /api/orders/552421634832109742?_expand=deliveryActor,invoiceActor,details,article
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /parseUrls?urls=%5B%22%2Fhome%22%5D
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /api/orders?_expand=deliveryActor
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /api/orders/552403001389702278?_expand=deliveryActor,invoiceActor,details,article
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /api/orders/552402703055188208?_expand=deliveryActor,invoiceActor,details,article
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /parseUrls?urls=%5B%22%2Factors%22%5D
+HTTP GET /favicon.ico
+file:
+/favicon.ico
+HTTP GET /api/actors
+Terminate batch job (Y/N)? 

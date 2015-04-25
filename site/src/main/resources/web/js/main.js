@@ -1,13 +1,34 @@
 
 $(function() {
-	// $.get('/api/partner/1', function(resp) {
-		// $('body').append(resp);
-	// });
-	
-	// 
+
+
+	var originalVal = $.fn.val;
+	$.fn.xVal = originalVal;
+
+	$.fn.val = function (value) {
+		if (this.hasClass('autonumeric')) {
+			if (typeof value == 'undefined') {
+				return this.autoNumericGet();
+			} else {
+				return this.autoNumericSet(value);
+			}
+		}
+		if (this.hasClass('autonumeric3') || this.hasClass('autonumeric3')) {
+			if (typeof value == 'undefined') {
+				return this.autoNumericGet();
+			} else {
+				return this.autoNumericSet(value);
+			}
+		}
+		return originalVal.apply(this, arguments);
+	};
+
+
+
+
+
+
 	$('#xld-nav-main li:has(ul)' ).doubleTapToGo();	
-	//$("#xld-nav-main1").mmenu();
-	//$("#xld-nav-main1").trigger("open.mm");
 	
 	$("#xld-nav-main ul ul a").click(function() {
 		var $ul = $(this).closest('ul');
@@ -635,12 +656,69 @@ xldApp.controller('xldMain', ['$scope', '$location', '$timeout', '$templateCache
 				if (a.ix < b.ix) { return -1; }
 				return 0;
 			});
+			
 			return arr;
+			
+			/*
+			// only the last : 
+			var arr2 = new Array();
+			arr2.push(arr[arr.length-1]);
+			return arr2;*/
 		}
 	});
 
 
+	xldApp.directive('xldMoney', function () {
 
+		function selectall_focus() {
+			var $this = $(this);
+			setTimeout(function () { $this.select(); }, 1);
+		}
+
+		function moneyParser(text) {
+			text = text.replace(/ /g, '');
+			text = text.replace(/,/g, '.');
+			return parseFloat(text);
+		}
+
+		function moneyFormatter(text) {
+			return text;
+		}
+
+		return {
+			restrict: 'A',
+			require: 'ngModel',
+			priority: 1,
+			link: function (scope, element, attr, ngModel) {
+				ngModel.$parsers.push(moneyParser);
+				ngModel.$formatters.push(moneyFormatter);
+
+				/*ngModel.$render = function () {
+					if (!!ngModel.$viewValue)
+						element.val(ngModel.$viewValue);
+				}*/
+
+
+				element.addClass("autonumeric");
+				element.autoNumeric({
+					aSep: ' ',
+					aDec: '.',
+					altDec: ',',
+					vMin: -999999999999.99,
+					vMax: +999999999999.99,
+					wEmpty: 'zero'
+				});
+
+				element
+					.unbind('focus', selectall_focus)
+					.focus(selectall_focus)
+					.unbind('click', selectall_focus)
+					.click(selectall_focus);
+
+				element.css({ 'text-align': 'right' });
+			}
+		}
+	});
 
 	xldApp.directive('xldReferenceActorActor', function () {
 		return {
@@ -716,6 +794,48 @@ xldApp.controller('xldMain', ['$scope', '$location', '$timeout', '$templateCache
 					var text = '';
 					if (ngModel.$viewValue)
 						text = ngModel.$viewValue.articleName;
+					$scope.searchterm = text;
+					elem.find('input').val(text);
+				};
+
+			
+			}
+		}
+	});
+
+
+	xldApp.directive('xldReference', function () {
+		return {
+			restrict: 'E',
+			require: 'ngModel',
+			template: "<input type='text' ng-model='searchterm' />",
+			scope: {	
+				ngModel: '=',
+				openerKey : '@'
+			},
+			link: function($scope, elem, attrs, ngModel) {
+				$scope.searchterm = '';
+				
+				changed = function(e) {
+					$scope.$apply(function() {
+						$scope.$parent.page.goForwardSub(e, "/expensekinds", $scope.openerKey);
+					});
+				}
+				
+				elem.bind('keyup', changed);
+				
+				
+				$scope.$on('subpageResult', function(e, sr) {
+					if (sr.key != $scope.openerKey)
+						return;
+					ngModel.$setViewValue(sr.value);
+					ngModel.$render();
+				});
+				
+				ngModel.$render = function() {
+					var text = '';
+					if (ngModel.$viewValue)
+						text = ngModel.$viewValue.expenseName;
 					$scope.searchterm = text;
 					elem.find('input').val(text);
 				};

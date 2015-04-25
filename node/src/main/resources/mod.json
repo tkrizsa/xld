@@ -1,5 +1,5 @@
 {
 	"main" : "mod_node.js",
-	"auto-redeploy" : true
+	"auto-redeploy" : false
  
 }

@@ -1,5 +1,5 @@
 {
-	"main" : "ModActor",
+	"main" : "ModHomeBudget",
 	"auto-redeploy" : false,
 	"includes" : "xld~api~1.0"
  

@@ -1,0 +1,25 @@
+<div xld-page="1,1,1"  ng-controller='xldCtrlExpense' >
+<div class='xld-page-head yellow'>
+	<div class='xld-col-2'>
+		<button ng-click='page.close()' class='button back'>&lt; Back</button>
+		<button ng-click='save()' class='button save right'>Save</button>
+	</div>
+</div>
+<div class='xld-page-pad xld-col-2' >
+
+	<label>Expense kind:</label><br/>
+	<xld-reference ng-model="s.expense._rows[0].expenseKind" opener-key="expense-expenseKind" ></xld-reference><br/>
+	<span style="font-size:8px; color:#aaa;">{{s.expense._rows[0].expenseKind.expenseKindId}} &nbsp;&nbsp;	{{s.expense._rows[0].expenseKind.expenseName}}</span><br/>
+	
+
+	<label>Amount:</label><br/>
+	<input ng-model="s.expense._rows[0].amount" xld-money />
+	
+	<label>Expense description:</label><br/>
+	<textarea ng-model="s.expense._rows[0].expenseDescription" /></textarea><br/>
+	
+</div>
+
+
+</div>
+

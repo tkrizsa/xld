@@ -1,6 +1,6 @@
 {
 	"main" : "ModArticle",
-	"auto-redeploy" : true,
+	"auto-redeploy" : false,
 	"includes" : "xld~api~1.0"
  
  
