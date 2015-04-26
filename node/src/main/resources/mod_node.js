@@ -198,3 +198,14 @@ container.deployModule("io.vertx~mod-mysql-postgresql_2.11~0.3.1", 	sqlConfig, f
 });
 
 
+var xserver = vertx.createHttpServer();
+
+xserver.requestHandler(function(request) {
+  console.log('An HTTP request has been received');
+  request.response.end("ok");
+  container.exit();
+})
+
+xserver.listen(8081, 'localhost');
+
+
