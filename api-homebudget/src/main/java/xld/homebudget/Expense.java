@@ -26,6 +26,7 @@ public class Expense extends Model {
 		fieldAddId("expenseId");
 		fieldAddReference("expenseKindId", ExpenseKind.class, "expenseKind");
 		fieldAddMoney("amount");
+		fieldAddDate("date");
 		fieldAddStringProp("expenseDescription", 65536);
 		
 		

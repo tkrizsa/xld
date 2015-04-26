@@ -1,5 +1,5 @@
 {
 	"main" : "ApiApp",
 	"auto-redeploy" : false,
-	"includes" : "io.vertx~lang-scala_2.10~1.1.0-M1"
+	"includes" : "io.vertx~lang-scala_2.11~1.1.0-M1"
 }

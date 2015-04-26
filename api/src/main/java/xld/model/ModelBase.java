@@ -87,6 +87,11 @@ public class ModelBase implements Iterable {
 	}
 	
 	
+	// node
+	public Node getNode() {
+		return this.node;
+	}
+	
 	// tableName
 	public String getTableName() {
 		return tableName;
@@ -169,6 +174,12 @@ public class ModelBase implements Iterable {
 	
 	public MoneyField fieldAddMoney(String fieldName) {
 		MoneyField f = new MoneyField(this, fieldName);
+		fieldAdd(f);
+		return f;
+	}
+
+	public DateField fieldAddDate(String fieldName) {
+		DateField f = new DateField(this, fieldName);
 		fieldAdd(f);
 		return f;
 	}
@@ -667,6 +678,12 @@ public class ModelBase implements Iterable {
 	
 	// ----------------------------------------------------------------------------------------------------------
 	private void sqlJsonRead(JsonObject json) {
+		node.info("------------------------- LOAD FROM SQL JSON RESULT : " + getModelId()  + " --------------------------------");
+		node.info(json);
+		node.info("------------------------- /LOAD FROM SQL JSON RESULT  --------------------------------");
+
+
+
 		/* save Current Sql Field List into a list from this model */
 		List<Field> cfs = fieldGetSqlFieldList();
 		/* save the same, for all the expands */

@@ -3,6 +3,8 @@ package xld.model.fields;
 import xld.model.ModelBase;
 import java.math.BigDecimal;
 import java.math.MathContext;
+import org.vertx.java.core.json.JsonObject;
+
 
 public class MoneyField extends Field {
 	
@@ -18,9 +20,9 @@ public class MoneyField extends Field {
 	
 
 	@Override
-	public Object parse(Object val){
+	public java.math.BigDecimal parse(Object val){
 		if (val == null || val instanceof BigDecimal) {
-			return val == null ? null : val;
+			return val == null ? null : (BigDecimal)val;
 		} else if (val instanceof scala.math.BigDecimal) {
 			return ((scala.math.BigDecimal)val).bigDecimal();
 		} else if (val instanceof Integer) {
@@ -32,9 +34,17 @@ public class MoneyField extends Field {
 			//throw new IllegalFieldDataException();
 			System.out.println("------------------ NO MONEY ---------------------");
 			System.out.println(val.getClass().getName());
+			System.out.println(scala.math.BigDecimal.class.getName());
 			return null;
 		}
 	}
+	
+	@Override
+	public void addToJson(ModelBase.Row row, JsonObject jrow) {
+		java.math.BigDecimal val = parse(row.get(fieldName));
+		jrow.putNumber(fieldName, val);
+	}
+	
 	
 	@Override
 	public String toString() {

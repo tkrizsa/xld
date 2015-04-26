@@ -33,3 +33,20 @@ ALTER TABLE `homebudget.expense`
 
 ALTER TABLE `homebudget.expense` 
 	ADD `amount`		NUMERIC(24,4) NOT NULL
+
+	
+--@xld-modelVersion	: fae682e41f94eb37fc94f766861f1da4
+--@xld-versionHint 	: add money field
+
+ALTER TABLE `homebudget.expense` 
+	ADD `date`		date NULL
+	
+--@xld-go
+
+UPDATE `homebudget.expense` SET date = NOW()
+
+--@xld-go
+
+ALTER TABLE `homebudget.expense` 
+	CHANGE `date`	`date`	date NOT NULL
+

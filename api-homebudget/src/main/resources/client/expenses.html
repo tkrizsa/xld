@@ -7,8 +7,9 @@
 </div>
 <table class='xld-list clickable xld-col-2' >
 	<tr ng-repeat="e in s.expenses._rows" class='selectable' ng-click='page.goDefault($event, e)' >
-	
+		<td>{{e.date}}</td>
 		<td>{{e.expenseKind.expenseName}}</td>
+		<td align="right">{{nf(e.amount)}}</td>
 		<td>{{e.expenseDescription}}</td>
 	</tr>
 </table>

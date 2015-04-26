@@ -7,10 +7,12 @@
 </div>
 <div class='xld-page-pad xld-col-2' >
 
+	<label>Amount:</label><br/>
+	<input type="date" ng-model="s.expense._rows[0].date"  />
+
 	<label>Expense kind:</label><br/>
 	<xld-reference ng-model="s.expense._rows[0].expenseKind" opener-key="expense-expenseKind" ></xld-reference><br/>
 	<span style="font-size:8px; color:#aaa;">{{s.expense._rows[0].expenseKind.expenseKindId}} &nbsp;&nbsp;	{{s.expense._rows[0].expenseKind.expenseName}}</span><br/>
-	
 
 	<label>Amount:</label><br/>
 	<input ng-model="s.expense._rows[0].amount" xld-money />

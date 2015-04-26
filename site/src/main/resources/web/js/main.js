@@ -575,6 +575,24 @@ xldApp.controller('xldMain', ['$scope', '$location', '$timeout', '$templateCache
 		$window.history.back();
 
 	}
+	
+	$scope.nf = function(f) {
+		nStr = ''+Math.floor(f);
+		var x = nStr.split('.');
+		var x1 = x[0];
+		var x2 = x.length > 1 ? '.' + x[1] : '';
+		var rgx = /(\d+)(\d{3})/;
+		while (rgx.test(x1)) {
+			x1 = x1.replace(rgx, '$1' + ' ' + '$2');
+		}
+		var frac = '' + (Math.round((f-Math.floor(f))*100)/100)
+		var fraca = frac.split('.');
+		frac = fraca[fraca.length-1];
+		if (frac.length==1) frac += '0';
+		return (x1 + x2) + '.' + frac;
+	}
+
+
 
 }]);
 

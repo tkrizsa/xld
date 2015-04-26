@@ -176,8 +176,8 @@ var sqlConfig = {
   "database" 		: 'flow'
 }
 
-container.deployModule("io.vertx~mod-mysql-postgresql~0.3.0-SNAPSHOT", 	sqlConfig, function(err, deployID) {
-//container.deployModule("io.vertx~mod-mysql-postgresql_2.11~0.3.1", 	sqlConfig, function(err, deployID) {
+//container.deployModule("io.vertx~mod-mysql-postgresql~0.3.0-SNAPSHOT", 	sqlConfig, function(err, deployID) {
+container.deployModule("io.vertx~mod-mysql-postgresql_2.11~0.3.1", 	sqlConfig, function(err, deployID) {
 	if (err) {
 		console.log("Deployment failed! " + err.getMessage());
 	} else {
