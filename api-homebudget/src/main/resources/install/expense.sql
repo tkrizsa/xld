@@ -50,3 +50,15 @@ UPDATE `homebudget.expense` SET date = NOW()
 ALTER TABLE `homebudget.expense` 
 	CHANGE `date`	`date`	date NOT NULL
 
+
+--@xld-modelVersion	: 4f318b5ee062cc320be8b006900f5ef3
+--@xld-versionHint 	: add actorId field
+
+TRUNCATE TABLE 	`homebudget.expense` 
+
+--@xld-go
+	
+ALTER TABLE `homebudget.expense` 
+	ADD `actorId`		BIGINT NOT NULL
+	
+	

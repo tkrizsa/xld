@@ -6,6 +6,7 @@ import xld.model.ModelBase;
 import xld.node.Node;
 
 import xld.homebudget.Expense;
+import xld.actor.Actor;
 
 
 
@@ -25,6 +26,7 @@ public class Expense extends Model {
 		
 		fieldAddId("expenseId");
 		fieldAddReference("expenseKindId", ExpenseKind.class, "expenseKind");
+		fieldAddReference("actorId", Actor.class, "actor");
 		fieldAddMoney("amount");
 		fieldAddDate("date");
 		fieldAddStringProp("expenseDescription", 65536);

@@ -1,4 +1,4 @@
-<div xld-page="2,2,2" ng-controller='xldCtrlExpenses' class=''>
+<div xld-page="3,3,3" ng-controller='xldCtrlExpenses' class=''>
 <div class='xld-page-head yellow'>
 	<div class='xld-col-2'>
 		<a class='button right' href='/expenses/new' xld-forward >Add expense</a>
@@ -7,6 +7,7 @@
 </div>
 <table class='xld-list clickable' >
 	<tr ng-repeat="e in s.expenses._rows" class='selectable' ng-click='page.goDefault($event, e)' >
+		<td>{{e.actor.actorName}}</td>
 		<td>{{e.date}}</td>
 		<td>{{e.expenseKind.expenseName}}</td>
 		<td align="right"><b>{{nf(e.amount)}}</b></td>

@@ -9,9 +9,14 @@
 
 	<label>Date:</label><br/>
 	<input ng-model="s.expense._rows[0].date" xld-date />
+	
+	<label>Actor:</label><br/>
+	<xld-reference ng-model="s.expense._rows[0].actor" opener-key="expense-actor" url="/actors" display-field="actorName" ></xld-reference><br/>
+	<span style="font-size:8px; color:#aaa;">{{s.expense._rows[0].actor.actorId}} &nbsp;&nbsp;	{{s.expense._rows[0].actor.actorName}}</span><br/>
+	
 
 	<label>Expense kind:</label><br/>
-	<xld-reference ng-model="s.expense._rows[0].expenseKind" opener-key="expense-expenseKind" ></xld-reference><br/>
+	<xld-reference ng-model="s.expense._rows[0].expenseKind" opener-key="expense-expenseKind" url="/expensekinds" display-field="expenseName" ></xld-reference><br/>
 	<span style="font-size:8px; color:#aaa;">{{s.expense._rows[0].expenseKind.expenseKindId}} &nbsp;&nbsp;	{{s.expense._rows[0].expenseKind.expenseName}}</span><br/>
 
 	<label>Amount:</label><br/>

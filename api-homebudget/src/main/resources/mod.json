@@ -1,7 +1,7 @@
 {
 	"main" : "ModHomeBudget",
 	"auto-redeploy" : false,
-	"includes" : "xld~api~1.0"
+	"includes" : "xld~api~1.0,xld~api-actor~1.0"
  
  
 }

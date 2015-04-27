@@ -860,14 +860,16 @@ xldApp.controller('xldMain', ['$scope', '$location', '$timeout', '$templateCache
 			template: "<input type='text' ng-model='searchterm' />",
 			scope: {	
 				ngModel: '=',
-				openerKey : '@'
+				openerKey : '@',
+				url : '@',
+				displayField : '@'
 			},
 			link: function($scope, elem, attrs, ngModel) {
 				$scope.searchterm = '';
 				
 				changed = function(e) {
 					$scope.$apply(function() {
-						$scope.$parent.page.goForwardSub(e, "/expensekinds", $scope.openerKey);
+						$scope.$parent.page.goForwardSub(e, $scope.url, $scope.openerKey);
 					});
 				}
 				
@@ -884,7 +886,7 @@ xldApp.controller('xldMain', ['$scope', '$location', '$timeout', '$templateCache
 				ngModel.$render = function() {
 					var text = '';
 					if (ngModel.$viewValue)
-						text = ngModel.$viewValue.expenseName;
+						text = ngModel.$viewValue[$scope.displayField];
 					$scope.searchterm = text;
 					elem.find('input').val(text);
 				};
