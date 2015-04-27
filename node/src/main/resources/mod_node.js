@@ -16,8 +16,12 @@ xld.log('', '','', '=============================== XLD Started... =============
 
 
 var addRoute = function(method, pattern, address, module) {
+	rm.register({method : method, pattern : pattern, address : address, module : module, kind : 'site'});
+	//console.log('add pattern: "'+pattern+'"; address: "'+address+'"; module: "'+ module + "'");
+}
 
-	rm.register({method : method, pattern : pattern, address : address, module : module});
+var addRouteSiteFile = function(method, pattern, path, module) {
+	rm.register({method : method, pattern : pattern, path : path, module : module, kind : 'sitefile'});
 	//console.log('add pattern: "'+pattern+'"; address: "'+address+'"; module: "'+ module + "'");
 }
 
@@ -26,6 +30,9 @@ var addRoute = function(method, pattern, address, module) {
 var registeredPatterns = {};
 
 var regFunc = function(a) {
+	kind = 'site';
+	if (a.kind)
+		kind = a.kind;
 	method = 'get';
 	if (a.method) {
 		method = a.method.toLowerCase();
@@ -34,12 +41,17 @@ var regFunc = function(a) {
 		throw "PATTERN ALREADY REGISTERED! ["+method + '|' + a.pattern + "]";
 	}
 	registeredPatterns[method + '|' + a.pattern] = a.address;
-	addRoute(method, a.pattern, a.address, a.module);
-	if (a.kind == 'template') {
-		if (registeredPatterns['get|' + a.indexPattern]) {
-			throw "PATTERN ALREADY REGISTERED!";
+	if (kind == 'sitefile') {
+		addRouteSiteFile(method, a.pattern, a.path, a.module);
+		
+	} else {
+		addRoute(method, a.pattern, a.address, a.module);
+		if (a.kind == 'template') {
+			if (registeredPatterns['get|' + a.indexPattern]) {
+				throw "PATTERN ALREADY REGISTERED!";
+			}
+			addRoute('get', a.indexPattern, '_index', a.module);
 		}
-		addRoute('get', a.indexPattern, '_index', a.module);
 	}
 	
 }	
@@ -77,11 +89,31 @@ server.requestHandler(function(request) {
 			r.path = '/';
 		}
 
-		
-		if (x.route.method == 'put' || x.route.method == 'post') {
-			// should be dangerous in case of large uploaded body, whole body kept in memory!
-			request.bodyHandler(function(body) {
-				r.body = body.toString();
+		if (x.route.kind == 'sitefile') {
+			console.log("SITEFILE");
+			var f = x.route.path;
+			if (x.params.file) 
+				f = x.route.path + x.params.file;
+			console.log(f);
+			request.response.sendFile(f);
+		} else {
+			if (x.route.method == 'put' || x.route.method == 'post') {
+				// should be dangerous in case of large uploaded body, whole body kept in memory!
+				request.bodyHandler(function(body) {
+					r.body = body.toString();
+					eb.send(addr, r, function(reply) {
+						if (reply.status) {
+							request.response.statusCode(reply.status);
+						}
+						if (reply.contentType) {
+							request.response.putHeader('Content-Type', reply.contentType);
+						}
+						
+						request.response.end(reply.body);
+					});
+				});		
+			} else {
+				
 				eb.send(addr, r, function(reply) {
 					if (reply.status) {
 						request.response.statusCode(reply.status);
@@ -89,25 +121,13 @@ server.requestHandler(function(request) {
 					if (reply.contentType) {
 						request.response.putHeader('Content-Type', reply.contentType);
 					}
-					
+					if (request.headers().get('Range')) 
+						request.response.statusCode(206);
 					request.response.end(reply.body);
 				});
-			});		
-		} else {
-			eb.send(addr, r, function(reply) {
-				if (reply.status) {
-					request.response.statusCode(reply.status);
-				}
-				if (reply.contentType) {
-					request.response.putHeader('Content-Type', reply.contentType);
-				}
-				if (request.headers().get('Range')) 
-					request.response.statusCode(206);
-				request.response.end(reply.body);
-			});
+			}
+
 		}
-
-
 
 
 });

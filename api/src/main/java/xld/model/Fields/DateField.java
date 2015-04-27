@@ -44,6 +44,11 @@ public class DateField extends Field {
 	@Override
 	public void addToJson(ModelBase.Row row, JsonObject jrow) {
 		Date val = parse(row.get(fieldName));
+		if (val == null) {
+			jrow.putValue(fieldName, null);
+			return;
+		}
+		
 		
 		//TimeZone tz = TimeZone.getTimeZone("UTC");
 		//SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'");
@@ -56,6 +61,11 @@ public class DateField extends Field {
 	@Override
 	public void addToJson(ModelBase.Row row, JsonArray jrow) {
 		Date val = parse(row.get(fieldName));
+		if (val == null) {
+			jrow.add(null);
+			return;
+		}
+		
 		
 		//TimeZone tz = TimeZone.getTimeZone("UTC");
 		//SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'");

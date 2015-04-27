@@ -14,6 +14,7 @@
         <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 
         <link rel="stylesheet" href="css/normalize.css">
+        <link rel="stylesheet" href="css/jquery-ui.css">
         <link rel="stylesheet" href="css/jquery.mmenu.all.css">
         <link rel="stylesheet" href="css/main.css">
         <link rel="stylesheet" href="css/layout.css">
@@ -31,24 +32,27 @@
 
 		
 		<div id='xld-outer' xld-window-resize >
+		
 			<!-- ============================= NAVIGATION =================================== -->
-			<nav id="xld-nav-main" role="navigation">
-				<ul>
-					<li><a href="/home">Home</a></li>
-					<li>
-						<a href="/orders" aria-haspopup="true">Orders</a>
-						<ul>
-							<li><a href="/orders">Orders</a></li>
-							<li><a href="/actors">Partners</a></li>
-							<li><a href="/articles">Articles</a></li>
-							<li>---</li>
-							<li><a href="/expenses">Expenses</a></li>
-							<li><a href="/expensekinds">Expense kinds</a></li>
-						</ul>
-					</li>
-					<li><a href="/about">About</a></li>
-				</ul>
-			</nav>
+			<div id='xld-header'>
+				<nav id="xld-nav-main" role="navigation">
+					<ul>
+						<li><a href="/home">Home</a></li>
+						<li>
+							<a href="/orders" aria-haspopup="true">Orders</a>
+							<ul>
+								<li><a href="/orders">Orders</a></li>
+								<li><a href="/actors">Partners</a></li>
+								<li><a href="/articles">Articles</a></li>
+								<li>---</li>
+								<li><a href="/expenses">Expenses</a></li>
+								<li><a href="/expensekinds">Expense kinds</a></li>
+							</ul>
+						</li>
+						<li><a href="/about">About</a></li>
+					</ul>
+				</nav>
+			</div>
 			
 			<div id='xld-main' ng-style="xldMainStyle()" >
 				<div id='xld-main-scroll'  >
@@ -66,6 +70,7 @@
 
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.10.2.min.js"><\/script>')</script>
+        <script src="js/vendor/jquery-ui-1.10.4.custom.min.js"></script>
         <script src="js/vendor/jquery.base64.js"></script>
         <script src="js/vendor/jquery.mmenu.min.all.js"></script>
    		<script src="js/vendor/jbox.js"></script>

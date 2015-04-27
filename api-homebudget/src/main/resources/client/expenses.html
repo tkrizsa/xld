@@ -5,11 +5,11 @@
 		<h1 >Expenses</h1>
 	</div>
 </div>
-<table class='xld-list clickable xld-col-2' >
+<table class='xld-list clickable' >
 	<tr ng-repeat="e in s.expenses._rows" class='selectable' ng-click='page.goDefault($event, e)' >
 		<td>{{e.date}}</td>
 		<td>{{e.expenseKind.expenseName}}</td>
-		<td align="right">{{nf(e.amount)}}</td>
+		<td align="right"><b>{{nf(e.amount)}}</b></td>
 		<td>{{e.expenseDescription}}</td>
 	</tr>
 </table>

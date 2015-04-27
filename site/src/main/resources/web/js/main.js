@@ -24,6 +24,7 @@ $(function() {
 	};
 
 
+	$.datepicker.setDefaults($.datepicker.regional["hu"]);
 
 
 
@@ -605,7 +606,7 @@ xldApp.controller('xldMain', ['$scope', '$location', '$timeout', '$templateCache
 			var w = angular.element($window);
 			
 			w.bind('resize', function () {
-				var head = $('#xld-nav-main');			
+				var head = $('#xld-header');			
 				var main = $('#xld-main');
 				main.css({height : (w.height() - head.height())+'px'});
 				if (!scope.$$phase)
@@ -737,6 +738,37 @@ xldApp.controller('xldMain', ['$scope', '$location', '$timeout', '$templateCache
 			}
 		}
 	});
+	
+	xldApp.directive('xldDate', function () {
+		return {
+			restrict: 'A',
+			require: 'ngModel',
+			priority: 1,
+			link: function (scope, element, attr, ngModel) {
+
+				var datepicker = element.datepicker();
+
+				ngModel.$render = function () {
+
+					if (!!ngModel.$viewValue) {
+						datepicker.datepicker('setDate', new Date(ngModel.$viewValue));
+					}
+				}
+
+
+				element.bind('change', function (e) {
+					if (!isNaN(ngModel.$viewValue)) {
+						datepicker.datepicker('setDate', '+' + ngModel.$viewValue + 'd');
+						ngModel.$setViewValue(element.val());
+						if (!scope.$$phase)
+							scope.$apply();
+					}
+				});
+			}
+		}
+	});
+
+	
 
 	xldApp.directive('xldReferenceActorActor', function () {
 		return {

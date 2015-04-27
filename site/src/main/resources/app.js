@@ -29,6 +29,8 @@ var fileLoader = function(req, replier) {
 				break;
 				case 'js' 		: ct = 'text/javascript';
 				break;
+				case 'png' 		: ct = 'image/png';
+				break;
 				case 'mp3' 		: ct = 'audio/mpeg';
 				break;
 			
@@ -42,13 +44,14 @@ var fileLoader = function(req, replier) {
 };
 
 
-
+var root = "d:/work2/xld/mods/xld~site~1.0/web/";
 
 xld.http('/', fileLoader);
-xld.http('/favicon.ico', fileLoader);
-xld.http('/audio/:file', fileLoader);
-xld.http('/css/:file', fileLoader);
-xld.http('/js/:file', fileLoader);
-xld.http('/js/vendor/:file', fileLoader);
+xld.httpFile('/favicon.ico', 		root+"favicon.ico");
+xld.httpFile('/audio/:file', 		root+"audio/");
+xld.httpFile('/css/:file', 			root+"css/");
+xld.httpFile('/js/:file', 			root+"js/");
+xld.httpFile('/js/vendor/:file', 	root+"js/vendor/");
+xld.httpFile('/css/images/:file', 	root+"css/images/");
 
 

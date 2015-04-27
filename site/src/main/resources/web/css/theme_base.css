@@ -37,10 +37,9 @@ box-shadow: 0px 0px 21px 0px rgba(0,0,0,0.7);
 }
 
 
-#xld-main, #xld-main-scroll {
+#xld-main {
 /*background-color:#353535;
 background-color: #D3D3D2;*/
-margin-top: 15px;
 }
 
 
@@ -102,6 +101,14 @@ font-weight: bold;
 margin-bottom : 3px;
 }
 
+.xld-page-content textarea {
+  border: none;
+  background-color: #FEFFCB;
+  background-color: #D1F2AE;
+  box-shadow: 5px 5px 5px -5px #000;
+  font-weight: normal;
+  height: 120px;
+}
 
 .xld-page-head {
 width: 100%;
@@ -121,7 +128,7 @@ border-bottom: 3px solid #ccc;
 	}
 
 	.xld-page-head.yellow {
-	border-bottom: 3px solid yellow;
+	border-bottom: 3px solid rgb(247, 228, 145);
 	}
 
 

@@ -13,10 +13,16 @@ public class Agent {
 		InputStream is;
 		String type;
 		boolean stopped = false;
+		String printStartsWith = null;
 
 		private StreamGobbler(InputStream is, String type) {
+			this(is, type, null);
+		}
+
+		private StreamGobbler(InputStream is, String type, String printStartsWith) {
 			this.is = is;
 			this.type = type;
+			this.printStartsWith = printStartsWith;
 		}
 
 		@Override
@@ -25,13 +31,18 @@ public class Agent {
 				InputStreamReader isr = new InputStreamReader(is);
 				BufferedReader br = new BufferedReader(isr);
 				String line = null;
-				while ((line = br.readLine()) != null && !stopped)
-					System.out.println(type + "> " + line);
+				while ((line = br.readLine()) != null && !stopped) {
+					if (line == null)	
+						continue;
+					if (printStartsWith == null || line.startsWith(printStartsWith))
+						System.out.println(type + "> " + line);
+					
+				}
 			}
 			catch (IOException ioe) {
 				ioe.printStackTrace();
 			}
-			System.out.println("****THRED STOPPED*****");
+			System.out.println("**** THRED STOPPED *****");
 		}
 		
 		public void xStop() {
@@ -45,16 +56,40 @@ public class Agent {
 
 		ProcessBuilder pb = new ProcessBuilder()
 			.command("D:\\work\\vertx\\bin\\vertx.bat", "runmod", "xld~node~1.0");
+		ProcessBuilder pbc = new ProcessBuilder()
+			.command("D:\\work\\apache-maven-3.2.3\\bin\\mvn.bat", "clean", "package");
 			
 			
 		Process p = pb.start();
-		StreamGobbler errorGobbler = new StreamGobbler(p.getErrorStream(), "ERROR");
-		StreamGobbler outputGobbler = new StreamGobbler(p.getInputStream(), "OUTPUT");
+		StreamGobbler errorGobbler = new StreamGobbler(p.getErrorStream(), "E");
+		StreamGobbler outputGobbler = new StreamGobbler(p.getInputStream(), "O");
 		outputGobbler.start();
 		errorGobbler.start();
 		
 		String input = System.console().readLine();
 		while (!"exit".equals(input)) {
+			
+			if ("rr".equals(input)) {
+				System.out.println("Recompiling....");
+				Process pc = pbc.start();
+				StreamGobbler cErrorGobbler = new StreamGobbler(pc.getErrorStream(), "C.ERR");
+				StreamGobbler cOutputGobbler = new StreamGobbler(pc.getInputStream(), "C.OUT", "[ERROR]");
+				cOutputGobbler.start();
+				cErrorGobbler.start();
+				
+				int evc = -1;
+				try {
+					evc = pc.waitFor();
+				} catch (InterruptedException ex) {
+					System.err.println(ex.getMessage());
+				}
+				System.out.println("exit code : " + evc);
+				if (evc == 0) {
+					input = "r"; // restart if compile succeseeded
+				}
+			}
+			
+			
 			if ("r".equals(input)) {
 				System.out.println("> Stopping server");
 				sendExit();
@@ -69,12 +104,14 @@ public class Agent {
 				System.out.println("> Restarting server");
 				
 				p = pb.start();
-				errorGobbler = new StreamGobbler(p.getErrorStream(), "ERROR");
-				outputGobbler = new StreamGobbler(p.getInputStream(), "OUTPUT");
+				errorGobbler = new StreamGobbler(p.getErrorStream(), "E");
+				outputGobbler = new StreamGobbler(p.getInputStream(), "O");
 				outputGobbler.start();
 				errorGobbler.start();
 				
 			}
+			
+			
 			
 			input = System.console().readLine();
 		}
