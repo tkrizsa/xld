@@ -597,7 +597,6 @@ xldApp.controller('xldMain', ['$scope', '$location', '$timeout', '$templateCache
 
 }]);
 
-
 	/* =================================================== DIRECTIVES ======================================== */
 
 	// Handles browser window resizing ... sets windowArea size
